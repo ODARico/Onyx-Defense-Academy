@@ -431,6 +431,20 @@ button { font: inherit; }
 }
 .class-card__cta { margin-top: 1.25rem; }
 
+.reciprocity-map {
+  margin-top: 2.5rem;
+  max-width: 100%;
+  border: 1px solid rgba(224,80,90,0.25);
+}
+.reciprocity-disclaimer {
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  line-height: 1.6;
+  color: var(--bone-dim);
+  max-width: 60em;
+}
+
 /* ==========================================================================
    PAGE BANNER (subpage header, replaces the full hero on Classes/About/Contact)
    ========================================================================== */
