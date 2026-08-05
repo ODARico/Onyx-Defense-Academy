@@ -64,7 +64,8 @@
   const CLASS_LABELS = {
     "Concealed Carry": { tag: "CCH Permit Course" },
     "Basic Handgun": { tag: "Beginner Friendly" },
-    "Handgun One-on-One": { tag: "Private Session" }
+    "Handgun One-on-One": { tag: "Private Session" },
+    "NC Concealed Carry Law Refresher": { tag: "Classroom Only" }
   };
 
   // Parses "YYYY-MM-DD" as a LOCAL date (not UTC), so the date shown
