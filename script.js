@@ -143,6 +143,21 @@
 
   renderSchedule();
 
+  /* ---- Rotate promotional offer images ----
+     Each offer link can list several image options in data-offer-images
+     (comma-separated). On each page load, one is picked at random so
+     repeat visitors see some variety instead of the same image every time. */
+  document.querySelectorAll("[data-offer-images]").forEach(function (link) {
+    var options = link.getAttribute("data-offer-images")
+      .split(",")
+      .map(function (s) { return s.trim(); })
+      .filter(Boolean);
+    if (options.length < 2) return;
+    var img = link.querySelector("img");
+    if (!img) return;
+    img.src = options[Math.floor(Math.random() * options.length)];
+  });
+
   /* ---- SMS link compatibility ----
      Android reads the prefilled message with "?body=", but iOS needs
      "&body=" instead. This rewrites every sms: link on the page for iOS
