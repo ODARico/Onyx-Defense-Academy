@@ -65,7 +65,7 @@
     "Concealed Carry": { tag: "CCH Permit Course" },
     "Basic Handgun": { tag: "Beginner Friendly" },
     "Handgun One-on-One": { tag: "Private Session" },
-    "NC Concealed Carry Law Refresher": { tag: "Classroom Only" }
+    "NC Concealed Carry Legal Refresher": { tag: "Classroom Only" }
   };
 
   // Parses "YYYY-MM-DD" as a LOCAL date (not UTC), so the date shown
@@ -136,7 +136,9 @@
           (item.notes ? '<p>' + item.notes + '</p>' : "") +
         '</div>' +
         '<div class="schedule-row__cta">' +
-          '<a class="btn btn--outline" href="' + telHref("9105878450") + '">Call to Reserve</a>' +
+          (item.registerUrl
+            ? '<a class="btn btn--red" href="' + item.registerUrl + '" target="_blank" rel="noopener">Register Now</a>'
+            : '<a class="btn btn--outline" href="' + telHref("9105878450") + '">Call to Reserve</a>') +
         '</div>';
       container.appendChild(row);
     });

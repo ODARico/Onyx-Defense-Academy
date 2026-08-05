@@ -16,12 +16,16 @@
                  "Concealed Carry"
                  "Basic Handgun"
                  "Handgun One-on-One"
-                 "NC Concealed Carry Law Refresher"
+                 "NC Concealed Carry Legal Refresher"
    - date      : the class date, formatted "YYYY-MM-DD"  (e.g. September 12, 2026 = "2026-09-12")
    - time      : whatever you want shown, e.g. "9:00 AM - 6:00 PM"
    - location  : where it's happening, e.g. "Harrison Creek Gun Club"
    - notes     : optional. Anything extra, e.g. "2 spots left" or "Bring your own eye/ear protection".
                  Leave as "" (empty quotes) if you don't need a note.
+   - registerUrl : optional. If you have a direct registration link (e.g. from your
+                 USCCA instructor listing), paste it here and the "Call to Reserve"
+                 button becomes a "Register Now" button linking straight there instead.
+                 Leave as "" if you don't have one -- it'll fall back to Call to Reserve.
 
    Classes are shown on the site automatically sorted soonest-first, and a
    date quietly drops off the list the day after it happens. To cancel a
@@ -30,13 +34,23 @@
 
 const scheduleData = [
 
-  // EXAMPLE — delete this block once you add your first real class date:
+  {
+    classType: "NC Concealed Carry Legal Refresher",
+    date: "2026-08-29",
+    time: "8:00 AM",
+    location: "Autryville, NC",
+    notes: "",
+    registerUrl: "https://www.usconcealedcarry.com/firearms-training/instructors/north-carolina-instructors/onyx-defense-academy-llc-3016131/class-autryville-nc-nc-concealed-carry-legal-refresher-92cc0/"
+  },
+
+  // EXAMPLE — copy this block for classes without a USCCA registration link:
   // {
   //   classType: "Concealed Carry",
   //   date: "2026-09-12",
   //   time: "9:00 AM - 6:00 PM",
   //   location: "Harrison Creek Gun Club",
-  //   notes: ""
+  //   notes: "",
+  //   registerUrl: ""
   // },
 
 ];
