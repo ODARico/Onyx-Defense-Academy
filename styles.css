@@ -218,6 +218,8 @@ button { font: inherit; }
 }
 .nav-links a:hover { color: var(--red-bright); border-color: var(--red-bright); }
 
+.nav-links a.active { color: var(--red-bright); border-color: var(--red-bright); }
+
 .nav-cta { display: flex; align-items: center; gap: 1rem; }
 
 .nav-toggle {
@@ -429,8 +431,124 @@ button { font: inherit; }
 }
 
 /* ==========================================================================
-   SCHEDULE (ledger style)
+   PAGE BANNER (subpage header, replaces the full hero on Classes/About/Contact)
    ========================================================================== */
+.page-banner {
+  background:
+    radial-gradient(ellipse 90% 70% at 82% -5%, rgba(173,20,32,0.22), transparent 60%),
+    var(--onyx-deep);
+  padding: clamp(3.5rem, 9vw, 5.5rem) 0 clamp(2.5rem, 6vw, 3.5rem);
+}
+.page-banner h1 {
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  text-transform: uppercase;
+  line-height: 1.02;
+  margin-bottom: 0.75rem;
+}
+.page-banner .section-lede { margin-top: 0; }
+
+/* ==========================================================================
+   HOME PAGE TEASERS
+   ========================================================================== */
+.teaser-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
+@media (max-width: 760px) { .teaser-grid { grid-template-columns: 1fr; } }
+
+.teaser-card {
+  background: var(--onyx-raised);
+  border-top: 3px solid var(--red);
+  padding: 1.75rem;
+  text-decoration: none;
+  color: var(--bone);
+  display: block;
+  transition: transform 0.15s ease;
+}
+.teaser-card:hover { transform: translateY(-2px); }
+.teaser-card__price {
+  font-family: var(--font-mono);
+  color: var(--red-bright);
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+.teaser-card h3 { font-size: 1.3rem; text-transform: uppercase; margin-bottom: 0.4rem; }
+.teaser-card p { color: var(--bone-dim); font-size: 0.92rem; margin: 0; }
+
+.section-more {
+  margin-top: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--red-bright);
+  text-decoration: none;
+}
+.section-more:hover { color: var(--red-hover); }
+
+.instructor-teaser {
+  display: grid;
+  grid-template-columns: 0.6fr 1fr;
+  gap: 2.5rem;
+  align-items: center;
+  margin-top: 2.5rem;
+}
+@media (max-width: 760px) { .instructor-teaser { grid-template-columns: 1fr; } }
+.instructor-teaser .instructor-photo { aspect-ratio: 1 / 1; max-width: 260px; }
+.instructor-teaser-copy p { color: var(--bone-dim); font-size: 1.05rem; }
+
+/* ==========================================================================
+   NOTARY SERVICE
+   ========================================================================== */
+.notary-block {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 2.5rem;
+  margin-top: 2.5rem;
+  background: var(--onyx-raised);
+  border-top: 3px solid var(--red);
+  padding: 2.25rem;
+}
+@media (max-width: 760px) { .notary-block { grid-template-columns: 1fr; } }
+
+.notary-copy p { color: var(--bone-dim); font-size: 1.05rem; }
+.notary-fees {
+  margin: 1.5rem 0;
+  border-top: 1px solid rgba(224,80,90,0.22);
+}
+.notary-fees li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(224,80,90,0.22);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+.notary-fees li span { color: var(--bone-dim); text-transform: uppercase; letter-spacing: 0.03em; }
+.notary-fees li strong { color: var(--bone); font-family: var(--font-display); font-size: 1.1rem; }
+
+.notary-highlight {
+  padding: 1rem 1.25rem;
+  border-left: 2px solid var(--red);
+  background: rgba(173,20,32,0.08);
+  font-size: 0.95rem;
+  color: var(--bone);
+}
+
+.notary-cta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  justify-content: center;
+}
+
+
 .schedule-list { margin-top: 2.5rem; border-top: 1px solid rgba(224,80,90,0.22); }
 .schedule-row {
   display: grid;

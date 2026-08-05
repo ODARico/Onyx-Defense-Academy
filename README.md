@@ -8,11 +8,16 @@ site-builder fee) so the only ongoing cost is what you already pay to renew
 
 | File | What it's for |
 |---|---|
-| `index.html` | The page itself — text and layout |
-| `styles.css` | Colors, fonts, spacing |
-| `script.js` | Makes the schedule and menu work — you shouldn't need to touch this |
+| `index.html` | Home page |
+| `classes.html` | Classes, pricing, notary service &amp; schedule |
+| `about.html` | Meet Your Instructor + service area |
+| `contact.html` | Contact info |
+| `styles.css` | Colors, fonts, spacing (shared by all pages) |
+| `script.js` | Makes the schedule and menu work (shared by all pages) — you shouldn't need to touch this |
 | `schedule-data.js` | **The file you'll actually edit** to add class dates |
-| `assets/` | Your logo, certification badges, and (soon) your photo |
+| `assets/` | Your logo, certification badges, and photo |
+
+The site is now four separate pages instead of one long scrolling page, linked together by the navigation menu at the top. If you ever edit shared content — your phone number, for instance — remember it may appear on more than one page (e.g. both `index.html` and `contact.html`), so check both.
 
 ## See it before you publish anything
 
@@ -73,7 +78,8 @@ businesses). No credit card required for this part, ever.
 
 **3. Upload your files**
    - On the new repository's page, click **uploading an existing file**
-   - Drag in `index.html`, `styles.css`, `script.js`, `schedule-data.js`,
+   - Drag in `index.html`, `classes.html`, `about.html`, `contact.html`,
+     `styles.css`, `script.js`, `schedule-data.js`,
      and the `assets` folder
    - Click **Commit changes**
 
