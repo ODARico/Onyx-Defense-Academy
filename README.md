@@ -115,6 +115,24 @@ which is the protection you didn't have before.
 
 ## If something looks off
 
+**Photos/logo/badges not showing up, but the text and colors look right:**
+This almost always means the `assets` folder didn't actually upload — GitHub's
+drag-and-drop uploader can silently skip folders if you drag them in wrong.
+To check: go to your repository on github.com and look at the file list. You
+should see a folder literally named `assets` sitting next to `index.html`.
+Click into it — you should see `logo.png`, `badge-uscca.png`, `badge-ncdoj.png`,
+`badge-notary.png`, and a few icon files.
+
+- **If `assets` isn't there at all:** go to **Add file → Upload files**, then
+  drag the `assets` folder itself (not its individual contents) into the
+  upload box. Most browsers will preserve the folder when you drag the whole
+  folder in — dragging loose files one at a time from inside it is what
+  usually loses the folder structure.
+- **If `assets` exists but files are missing or misnamed:** click into it,
+  use **Add file → Upload files** from inside that folder, and add whatever's
+  missing. Filenames must match exactly, including lowercase — `Logo.png` and
+  `logo.png` are different files as far as your live site is concerned.
+
 Open `index.html` in your browser and check the browser's "console" (right
 click the page → Inspect → Console tab) for red error text — or just send
 the files back to whoever helped you build this.

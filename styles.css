@@ -1,36 +1,37 @@
 /* ==========================================================================
    ONYX DEFENSE ACADEMY — stylesheet
    Palette: onyx (near-black) + red + steel/gunmetal, sampled directly from
-            the real Onyx Defense Academy logo, on a bone (paper) surface.
-   Type: Big Shoulders Display (stamped-steel headlines) / Source Serif 4
-         (trustworthy, document-like body) / IBM Plex Mono (scorecard data)
+            the real Onyx Defense Academy logo. Black-dominant throughout
+            for a tactical feel — white surfaces are reserved for official
+            certification seals, which need to stay legible/authentic.
+   Type: Big Shoulders Display (stamped-steel headlines) / Barlow (clean,
+         utilitarian body) / IBM Plex Mono (scorecard data)
    ========================================================================== */
 
 :root {
   /* --- Color tokens --- */
   --onyx:        #14151a;   /* primary dark surface */
-  --onyx-deep:   #0a0b0e;   /* darkest surface (footer) */
-  --onyx-raised: #1d1f26;   /* cards/panels on dark surfaces */
-  --bone:        #f3efe6;   /* light surface / primary text-on-dark */
-  --bone-dim:    #cfc9ba;   /* secondary text on dark */
-  --ink:         #201d16;   /* primary text on light surfaces */
-  --ink-dim:     #5b5648;   /* secondary text on light surfaces */
+  --onyx-deep:   #0a0b0e;   /* alternate dark surface + darkest (footer) */
+  --onyx-raised: #202226;   /* cards/panels, sits above either dark surface */
+  --bone:        #f3efe6;   /* primary text on dark surfaces */
+  --bone-dim:    #a9a49a;   /* secondary text on dark surfaces */
+  --ink-dim:     #5b5648;   /* text on white card surfaces (badges) */
 
   --red:         #ad1420;   /* primary accent — sampled from the logo's chrome-red ONYX lettering */
   --red-bright:  #e0505a;   /* text/labels on dark surfaces */
   --red-hover:   #c41f2c;   /* button hover fill */
-  --red-dim:     #6e1119;   /* muted borders/hairlines on dark surfaces */
+  --red-dim:     #6e1119;   /* muted borders/hairlines */
 
   --steel:       #8f9195;   /* secondary accent — sampled from the logo's silver pistols/ring */
-  --steel-bright:#b7b9bc;   /* lighter steel, dark-surface use */
-  --steel-deep:  #3d4245;   /* darker steel, for text on light/bone surfaces */
+  --steel-bright:#b7b9bc;   /* lighter steel */
+  --steel-deep:  #3d4245;   /* darker steel, for text on white card surfaces */
 
-  --hairline:    rgba(173, 20, 32, 0.32);
-  --hairline-on-bone: rgba(32, 29, 22, 0.14);
+  --hairline:    rgba(224, 80, 90, 0.28);
+  --hairline-steel: rgba(143, 145, 149, 0.28);
 
   /* --- Type --- */
   --font-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
-  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-body: "Barlow", "Helvetica Neue", Arial, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "Courier New", monospace;
 
   /* --- Layout --- */
@@ -53,7 +54,7 @@ body {
 }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
-h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 700; letter-spacing: 0.01em; }
+h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 700; letter-spacing: 0.01em; color: var(--bone); }
 p { margin: 0 0 1em; }
 ul { margin: 0; padding: 0; list-style: none; }
 button { font: inherit; }
@@ -84,9 +85,9 @@ button { font: inherit; }
 .section {
   padding: var(--section-pad) 0;
   position: relative;
+  background: var(--onyx);
 }
-.section--dark  { background: var(--onyx); color: var(--bone); }
-.section--light { background: var(--bone); color: var(--ink); }
+.section--alt { background: var(--onyx-deep); }
 
 .eyebrow {
   font-family: var(--font-mono);
@@ -97,15 +98,14 @@ button { font: inherit; }
   align-items: center;
   gap: 0.6em;
   margin-bottom: 1rem;
+  color: var(--red-bright);
 }
-.section--dark .eyebrow { color: var(--red-bright); }
-.section--light .eyebrow { color: var(--steel-deep); }
-
 .eyebrow::before {
   content: "";
-  width: 0.5em;
-  height: 0.5em;
+  width: 0.9em;
+  height: 0.4em;
   background: currentColor;
+  clip-path: polygon(0 0, 70% 0, 100% 100%, 30% 100%);
   flex: none;
 }
 
@@ -120,11 +120,10 @@ button { font: inherit; }
   font-family: var(--font-body);
   font-size: 1.125rem;
   max-width: 46em;
+  color: var(--bone-dim);
 }
-.section--dark .section-lede { color: var(--bone-dim); }
-.section--light .section-lede { color: var(--ink-dim); }
 
-/* Small ornament used *between* sections instead of a plain rule.
+/* Small chevron ornament between sections instead of a plain rule.
    Not a numbered sequence -- classes/sections aren't ordered steps,
    so this is a neutral mark, not a "01 / 02 / 03" counter. */
 .divider {
@@ -133,7 +132,7 @@ button { font: inherit; }
   margin-bottom: 2.75rem;
   line-height: 0;
 }
-.divider svg { width: 20px; height: 20px; }
+.divider svg { width: 30px; height: 16px; }
 
 /* --- Buttons --- */
 .btn {
@@ -163,16 +162,11 @@ button { font: inherit; }
 
 .btn--outline {
   background: transparent;
-  border-color: var(--hairline);
+  border-color: var(--steel-deep);
+  border-color: rgba(143, 145, 149, 0.5);
   color: var(--bone);
 }
 .btn--outline:hover { border-color: var(--red-bright); color: var(--red-bright); }
-
-.section--light .btn--outline {
-  border-color: var(--hairline-on-bone);
-  color: var(--ink);
-}
-.section--light .btn--outline:hover { border-color: var(--steel-deep); color: var(--steel-deep); }
 
 .btn--block { width: 100%; justify-content: center; }
 
@@ -183,9 +177,9 @@ button { font: inherit; }
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(10, 11, 14, 0.92);
+  background: rgba(10, 11, 14, 0.94);
   backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--red-dim);
 }
 .site-header .container {
   display: flex;
@@ -229,7 +223,7 @@ button { font: inherit; }
 .nav-toggle {
   display: none;
   background: none;
-  border: 1px solid var(--hairline);
+  border: 1px solid var(--hairline-steel);
   color: var(--bone);
   width: 44px;
   height: 44px;
@@ -247,13 +241,13 @@ button { font: inherit; }
     flex-direction: column;
     gap: 0;
     padding: 0.5rem 1.5rem 1.5rem;
-    border-bottom: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--red-dim);
     transform: translateY(-8px);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.2s ease, transform 0.2s ease;
   }
-  .nav-links a { padding: 0.9em 0; border-bottom: 1px solid var(--hairline); width: 100%; }
+  .nav-links a { padding: 0.9em 0; border-bottom: 1px solid rgba(224,80,90,0.18); width: 100%; }
   .nav-links.is-open { opacity: 1; transform: translateY(0); pointer-events: auto; }
   .nav-cta .btn--outline { display: none; }
   .nav-toggle { display: inline-flex; }
@@ -263,7 +257,10 @@ button { font: inherit; }
    HERO
    ========================================================================== */
 .hero {
-  background: radial-gradient(ellipse 120% 80% at 80% -10%, rgba(173,20,32,0.16), transparent 60%), var(--onyx);
+  background:
+    radial-gradient(ellipse 90% 70% at 82% -5%, rgba(173,20,32,0.30), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 8% 100%, rgba(143,145,149,0.10), transparent 60%),
+    var(--onyx-deep);
   padding: clamp(4.5rem, 12vw, 8rem) 0 var(--section-pad);
   overflow: hidden;
   position: relative;
@@ -316,14 +313,14 @@ button { font: inherit; }
   align-items: center;
   gap: 0.5em;
   padding: 0.5em 0.8em;
-  border: 1px solid var(--hairline);
+  border: 1px solid rgba(224,80,90,0.35);
   border-radius: var(--radius-sm);
 }
 .credential-strip span::before {
   content: "";
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--red-bright);
   flex: none;
 }
 
@@ -332,8 +329,8 @@ button { font: inherit; }
 .hero-logo::before {
   content: "";
   position: absolute;
-  inset: -10%;
-  background: radial-gradient(circle, rgba(173,20,32,0.22), transparent 68%);
+  inset: -14%;
+  background: radial-gradient(circle, rgba(173,20,32,0.35), transparent 65%);
   z-index: 0;
 }
 .hero-logo img {
@@ -341,6 +338,7 @@ button { font: inherit; }
   z-index: 1;
   width: 100%;
   height: auto;
+  filter: drop-shadow(0 25px 45px rgba(0,0,0,0.65));
   animation: logoEntrance 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 .hero-logo-tagline {
@@ -351,7 +349,7 @@ button { font: inherit; }
   letter-spacing: 0.32em;
   text-transform: uppercase;
   font-size: 0.72rem;
-  color: var(--bone-dim);
+  color: var(--red-bright);
   margin: 1.1rem 0 0;
 }
 @keyframes logoEntrance {
@@ -393,7 +391,7 @@ button { font: inherit; }
 @media (max-width: 640px) { .class-grid { grid-template-columns: 1fr; } }
 
 .class-card {
-  background: var(--onyx);
+  background: var(--onyx-raised);
   color: var(--bone);
   border-top: 3px solid var(--red);
   padding: 2rem 1.75rem;
@@ -425,7 +423,7 @@ button { font: inherit; }
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--bone-dim);
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid rgba(224,80,90,0.22);
   padding-top: 1rem;
   margin-top: 1rem;
 }
@@ -433,14 +431,14 @@ button { font: inherit; }
 /* ==========================================================================
    SCHEDULE (ledger style)
    ========================================================================== */
-.schedule-list { margin-top: 2.5rem; border-top: 1px solid var(--hairline); }
+.schedule-list { margin-top: 2.5rem; border-top: 1px solid rgba(224,80,90,0.22); }
 .schedule-row {
   display: grid;
   grid-template-columns: 130px 1fr auto;
   gap: 1.25rem;
   align-items: center;
   padding: 1.35rem 0;
-  border-bottom: 1px solid var(--hairline);
+  border-bottom: 1px solid rgba(224,80,90,0.22);
 }
 .schedule-row__date {
   font-family: var(--font-mono);
@@ -471,7 +469,7 @@ button { font: inherit; }
 
 .schedule-empty {
   margin-top: 2.5rem;
-  border: 1px dashed var(--hairline);
+  border: 1px dashed var(--hairline-steel);
   padding: 3rem 2rem;
   text-align: center;
 }
@@ -499,8 +497,8 @@ button { font: inherit; }
 
 .instructor-photo {
   aspect-ratio: 4 / 5;
-  background: var(--onyx);
-  border: 1px solid var(--hairline-on-bone);
+  background: var(--onyx-raised);
+  border: 1px solid rgba(224,80,90,0.3);
   position: relative;
   overflow: hidden;
 }
@@ -512,7 +510,7 @@ button { font: inherit; }
   gap: 0.75rem;
   color: var(--bone-dim);
 }
-.instructor-photo .photo-fallback svg { width: 64px; height: 64px; opacity: 0.5; }
+.instructor-photo .photo-fallback svg { width: 64px; height: 64px; opacity: 0.6; }
 .instructor-photo .photo-fallback span {
   font-family: var(--font-mono);
   font-size: 0.7rem;
@@ -522,7 +520,9 @@ button { font: inherit; }
 .instructor-photo img.has-error { display: none; }
 
 /* Certification badges -- mixes real official seals (USCCA, NCDOJ, Notary)
-   with plain marks for credentials that don't have a supplied logo. */
+   with plain marks for credentials that don't have a supplied logo. Cards
+   stay white/light on purpose: official seals need to read as authentic,
+   and the white pops hard against the black section around them. */
 .badge-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -534,8 +534,7 @@ button { font: inherit; }
 
 .badge-card {
   background: #ffffff;
-  border: 1px solid var(--hairline-on-bone);
-  border-radius: var(--radius-sm);
+  border-top: 3px solid var(--red);
   padding: 1rem 0.65rem;
   min-height: 132px;
   display: flex;
@@ -566,21 +565,21 @@ button { font: inherit; }
   color: var(--steel-deep);
 }
 
-.bio h3 {
-  font-size: 1.9rem;
-  text-transform: uppercase;
-  margin-bottom: 0.25rem;
-}
 .bio .role {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--steel-deep);
+  color: var(--red-bright);
   margin-bottom: 1.25rem;
   display: block;
 }
-.bio p { color: var(--ink-dim); font-size: 1.05rem; }
+.bio h3 {
+  font-size: 1.9rem;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+}
+.bio p { color: var(--bone-dim); font-size: 1.05rem; }
 
 /* ==========================================================================
    SERVICE AREA
@@ -605,11 +604,11 @@ button { font: inherit; }
 }
 .radius-ring {
   position: absolute;
-  border: 1px solid var(--hairline);
+  border: 1px solid rgba(224,80,90,0.3);
   border-radius: 50%;
 }
 .radius-ring--1 { inset: 0; }
-.radius-ring--2 { inset: 15%; border-color: var(--hairline); }
+.radius-ring--2 { inset: 15%; }
 .radius-ring--3 { inset: 30%; border-color: var(--steel); }
 .radius-center {
   position: relative;
@@ -650,16 +649,17 @@ button { font: inherit; }
 @media (max-width: 760px) { .contact-grid { grid-template-columns: 1fr; } }
 
 .contact-card {
-  border: 1px solid var(--hairline-on-bone);
+  background: var(--onyx-raised);
+  border-top: 3px solid var(--steel);
   padding: 2rem 1.5rem;
   text-align: left;
   text-decoration: none;
-  color: var(--ink);
+  color: var(--bone);
   transition: border-color 0.15s ease, transform 0.15s ease;
   display: block;
 }
-.contact-card:hover { border-color: var(--steel-deep); transform: translateY(-2px); }
-.contact-card .eyebrow { color: var(--steel-deep); margin-bottom: 1rem; }
+.contact-card:hover { border-color: var(--red); transform: translateY(-2px); }
+.contact-card .eyebrow { margin-bottom: 1rem; }
 .contact-card strong {
   display: block;
   font-family: var(--font-display);
@@ -667,7 +667,7 @@ button { font: inherit; }
   text-transform: uppercase;
   margin-bottom: 0.3rem;
 }
-.contact-card span { font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink-dim); }
+.contact-card span { font-family: var(--font-mono); font-size: 0.85rem; color: var(--bone-dim); }
 
 .social-row {
   margin-top: 2.5rem;
@@ -676,20 +676,20 @@ button { font: inherit; }
   gap: 1rem;
   font-family: var(--font-mono);
   font-size: 0.8rem;
-  color: var(--ink-dim);
+  color: var(--bone-dim);
 }
 .social-row a {
   width: 40px; height: 40px;
-  border: 1px solid var(--hairline-on-bone);
+  border: 1px solid var(--hairline-steel);
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: var(--ink);
+  color: var(--bone);
   transition: border-color 0.15s ease, color 0.15s ease;
 }
-.social-row a:hover { border-color: var(--steel-deep); color: var(--steel-deep); }
+.social-row a:hover { border-color: var(--red-bright); color: var(--red-bright); }
 .social-row svg { width: 18px; height: 18px; }
 
 /* ==========================================================================
@@ -699,7 +699,7 @@ button { font: inherit; }
   background: var(--onyx-deep);
   color: var(--bone-dim);
   padding: 3rem 0 2rem;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid var(--red-dim);
 }
 .footer-grid {
   display: flex;
@@ -725,7 +725,7 @@ button { font: inherit; }
 .footer-bottom {
   margin-top: 2.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid var(--hairline);
+  border-top: 1px solid rgba(224,80,90,0.18);
   font-family: var(--font-mono);
   font-size: 0.68rem;
   color: var(--bone-dim);
