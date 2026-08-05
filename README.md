@@ -12,7 +12,7 @@ site-builder fee) so the only ongoing cost is what you already pay to renew
 | `styles.css` | Colors, fonts, spacing |
 | `script.js` | Makes the schedule and menu work — you shouldn't need to touch this |
 | `schedule-data.js` | **The file you'll actually edit** to add class dates |
-| `assets/` | Where your photos go |
+| `assets/` | Your logo, certification badges, and (soon) your photo |
 
 ## See it before you publish anything
 
@@ -33,6 +33,23 @@ need to touch `index.html`.
 Drop a photo into the `assets` folder named exactly `christian-headshot.jpg`.
 It'll appear in the "Meet Your Instructor" section automatically. Until you
 add it, that spot just shows a simple placeholder mark — nothing looks broken.
+
+## What's already in the `assets` folder
+
+Your real logo and certification badges are already wired into the site —
+you don't need to touch these:
+
+| File | Where it's used |
+|---|---|
+| `logo.png` | Header and hero section |
+| `favicon.png` / `favicon-32.png` / `apple-touch-icon.png` | Browser tab icon, phone home-screen icon |
+| `badge-uscca.png` | "Meet Your Instructor" — USCCA seal |
+| `badge-ncdoj.png` | "Meet Your Instructor" — NC DOJ Justice Academy seal |
+| `badge-notary.png` | "Meet Your Instructor" — NC Notary Association seal |
+
+If you ever want to swap any of these for a higher-resolution or updated
+version, just replace the file — keep the same filename and the site
+picks it up automatically.
 
 ## One thing to fix before you publish
 
