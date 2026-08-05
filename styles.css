@@ -429,6 +429,7 @@ button { font: inherit; }
   padding-top: 1rem;
   margin-top: 1rem;
 }
+.class-card__cta { margin-top: 1.25rem; }
 
 /* ==========================================================================
    PAGE BANNER (subpage header, replaces the full hero on Classes/About/Contact)

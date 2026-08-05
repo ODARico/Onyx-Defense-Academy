@@ -142,4 +142,15 @@
   }
 
   renderSchedule();
+
+  /* ---- SMS link compatibility ----
+     Android reads the prefilled message with "?body=", but iOS needs
+     "&body=" instead. This rewrites every sms: link on the page for iOS
+     visitors only, so the prewritten text still shows up either way. */
+  var isIOS = /iP(hone|od|ad)/.test(navigator.userAgent);
+  if (isIOS) {
+    document.querySelectorAll('a[href^="sms:"]').forEach(function (a) {
+      a.href = a.href.replace("?body=", "&body=");
+    });
+  }
 })();
