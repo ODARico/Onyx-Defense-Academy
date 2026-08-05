@@ -513,25 +513,38 @@ button { font: inherit; }
 .instructor-teaser-copy p { color: var(--bone-dim); font-size: 1.05rem; }
 
 /* ==========================================================================
-   NOTARY SERVICE
+   ADDITIONAL SERVICES (Notary today; more services reuse this same pattern)
    ========================================================================== */
-.notary-block {
+.service-item { margin-top: 3rem; }
+.service-item:first-child { margin-top: 0; }
+.service-item + .service-item {
+  padding-top: 3rem;
+  border-top: 1px solid rgba(224,80,90,0.18);
+}
+.service-item__title {
+  font-size: 1.6rem;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.service-item__lede { color: var(--bone-dim); font-size: 1.05rem; margin-bottom: 0; }
+
+.service-block {
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
   gap: 2.5rem;
-  margin-top: 2.5rem;
+  margin-top: 1.75rem;
   background: var(--onyx-raised);
   border-top: 3px solid var(--red);
   padding: 2.25rem;
 }
-@media (max-width: 760px) { .notary-block { grid-template-columns: 1fr; } }
+@media (max-width: 760px) { .service-block { grid-template-columns: 1fr; } }
 
-.notary-copy p { color: var(--bone-dim); font-size: 1.05rem; }
-.notary-fees {
+.service-copy p { color: var(--bone-dim); font-size: 1.05rem; }
+.service-fees {
   margin: 1.5rem 0;
   border-top: 1px solid rgba(224,80,90,0.22);
 }
-.notary-fees li {
+.service-fees li {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -540,10 +553,10 @@ button { font: inherit; }
   font-family: var(--font-mono);
   font-size: 0.85rem;
 }
-.notary-fees li span { color: var(--bone-dim); text-transform: uppercase; letter-spacing: 0.03em; }
-.notary-fees li strong { color: var(--bone); font-family: var(--font-display); font-size: 1.1rem; }
+.service-fees li span { color: var(--bone-dim); text-transform: uppercase; letter-spacing: 0.03em; }
+.service-fees li strong { color: var(--bone); font-family: var(--font-display); font-size: 1.1rem; }
 
-.notary-highlight {
+.service-highlight {
   padding: 1rem 1.25rem;
   border-left: 2px solid var(--red);
   background: rgba(173,20,32,0.08);
@@ -551,7 +564,7 @@ button { font: inherit; }
   color: var(--bone);
 }
 
-.notary-cta {
+.service-cta {
   display: flex;
   flex-direction: column;
   gap: 0.85rem;
