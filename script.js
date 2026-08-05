@@ -47,12 +47,14 @@
   }
 
   /* ---- Instructor photo fallback ----
-     If assets/christian-headshot.jpg hasn't been added yet, hide the
-     broken image and show the placeholder mark instead. */
+     If assets/christian-headshot.jpg is missing or fails to load, show the
+     placeholder mark instead. The fallback stays hidden by default so it
+     never overlaps a photo that loaded successfully. */
   const photo = document.getElementById("instructor-photo-img");
   if (photo) {
     photo.addEventListener("error", function () {
-      photo.classList.add("has-error");
+      const container = photo.closest(".instructor-photo");
+      if (container) container.classList.add("has-error");
     });
   }
 
