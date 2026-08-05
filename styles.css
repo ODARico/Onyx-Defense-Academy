@@ -492,6 +492,15 @@ button { font: inherit; }
 }
 .section-more:hover { color: var(--red-hover); }
 
+.teaser-notary-note {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(224,80,90,0.22);
+  color: var(--bone-dim);
+  font-size: 0.95rem;
+}
+.teaser-notary-note .section-more { margin-top: 0; margin-left: 0.4em; }
+
 .instructor-teaser {
   display: grid;
   grid-template-columns: 0.6fr 1fr;
