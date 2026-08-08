@@ -126,7 +126,7 @@
       const { weekday, rest } = formatDate(item._date);
       const meta = CLASS_LABELS[item.classType] || { tag: "Class" };
       const row = document.createElement("div");
-      row.className = "schedule-row reveal";
+      row.className = "schedule-row reveal is-visible";
       row.innerHTML =
         '<div class="schedule-row__date"><span class="weekday">' + weekday + '</span>' + rest + '</div>' +
         '<div class="schedule-row__info">' +
