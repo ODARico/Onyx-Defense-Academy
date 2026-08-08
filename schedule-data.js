@@ -19,7 +19,7 @@
                  "NC Concealed Carry Legal Refresher"
    - date      : the class date, formatted "YYYY-MM-DD"  (e.g. September 12, 2026 = "2026-09-12")
    - time      : whatever you want shown, e.g. "9:00 AM - 6:00 PM"
-   - location  : where it's happening, e.g. "Harrison Creek Gun Club"
+   - location  : where it's happening, e.g. "a range or location near you"
    - notes     : optional. Anything extra, e.g. "2 spots left" or "Bring your own eye/ear protection".
                  Leave as "" (empty quotes) if you don't need a note.
    - registerUrl : optional. If you have a direct registration link (e.g. from your
@@ -48,7 +48,7 @@ const scheduleData = [
   //   classType: "Concealed Carry",
   //   date: "2026-09-12",
   //   time: "9:00 AM - 6:00 PM",
-  //   location: "Harrison Creek Gun Club",
+  //   location: "a range or location near you",
   //   notes: "",
   //   registerUrl: ""
   // },
