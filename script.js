@@ -225,9 +225,11 @@
       card.innerHTML =
         '<div class="review-card__stars" aria-label="5 out of 5 stars">' +
           '<svg viewBox="0 0 120 24" aria-hidden="true">' +
-            '<use href="#onyx-star" x="0"/><use href="#onyx-star" x="24"/>' +
-            '<use href="#onyx-star" x="48"/><use href="#onyx-star" x="72"/>' +
-            '<use href="#onyx-star" x="96"/>' +
+            '<use href="#onyx-star" x="0" y="0" width="24" height="24"/>' +
+            '<use href="#onyx-star" x="24" y="0" width="24" height="24"/>' +
+            '<use href="#onyx-star" x="48" y="0" width="24" height="24"/>' +
+            '<use href="#onyx-star" x="72" y="0" width="24" height="24"/>' +
+            '<use href="#onyx-star" x="96" y="0" width="24" height="24"/>' +
           "</svg>" +
         "</div>" +
         "<blockquote>" + String(r.quote) + "</blockquote>" +
