@@ -332,6 +332,154 @@
     img.src = options[Math.floor(Math.random() * options.length)];
   });
 
+  /* ---- Interactive reciprocity map ----
+     Draws the US map from us-map-paths.js (generated geometry, don't edit) and
+     colors it from reciprocity-data.js (the file Rico edits). Clicking a state
+     fills the detail panel. Falls back silently if either file is missing --
+     the static map image stays in the markup as a no-JS fallback. */
+  var RECIP_MEANING = {
+    yes: {
+      label: "Honors your NC permit",
+      text: "This state recognizes a North Carolina concealed handgun permit. You still have to follow that state's own rules about where and how you may carry."
+    },
+    constitutional: {
+      label: "Honors your NC permit \u2014 permitless carry state",
+      text: "This state recognizes your North Carolina permit, and also allows permitless carry for qualifying adults. Carrying on your permit can still be worth it \u2014 it travels to other states and can matter for where you're allowed to carry."
+    },
+    restricted: {
+      label: "Honors your NC permit, with restrictions",
+      text: "This state recognizes your North Carolina permit but attaches conditions to it. Check the specifics for this state before you carry there."
+    },
+    no: {
+      label: "Does NOT honor your NC permit",
+      text: "This state does not recognize a North Carolina concealed handgun permit. Do not carry here on your NC permit."
+    },
+    home: {
+      label: "Your home state",
+      text: "North Carolina \u2014 where your permit is issued."
+    },
+    unknown: {
+      label: "Status not set",
+      text: "No status has been recorded for this state yet. Check an official source before traveling."
+    }
+  };
+
+  // Small states get a tap target in a chip row instead of an on-map label.
+  var RECIP_CHIPS = ["VT","NH","MA","RI","CT","NJ","DE","MD","DC"];
+
+  function renderReciprocityMap() {
+    var host = document.getElementById("recip-map");
+    var panel = document.getElementById("recip-panel");
+    if (!host || !panel) return;
+    if (typeof usMapGeometry === "undefined" || typeof reciprocityData === "undefined") return;
+
+    var byAbbr = {};
+    (reciprocityData.states || []).forEach(function (st) { byAbbr[st.abbr] = st; });
+
+    var geo = usMapGeometry;
+    var svgNS = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("viewBox", "0 0 " + geo.w + " " + geo.h);
+    svg.setAttribute("class", "recip-svg");
+    svg.setAttribute("role", "group");
+    svg.setAttribute("aria-label", "Map of the United States. Select a state to see whether it honors a North Carolina concealed handgun permit.");
+
+    var selected = null;
+
+    function select(abbr) {
+      var st = byAbbr[abbr];
+      if (!st) return;
+      var meaning = RECIP_MEANING[st.status] || RECIP_MEANING.unknown;
+
+      if (selected) selected.forEach(function (el) { el.classList.remove("is-selected"); });
+      selected = [];
+      Array.prototype.forEach.call(
+        document.querySelectorAll('[data-state="' + abbr + '"]'),
+        function (el) { el.classList.add("is-selected"); selected.push(el); }
+      );
+
+      var links = "";
+      if (st.officialUrl) {
+        links += '<a class="btn btn--outline" href="' + st.officialUrl + '" target="_blank" rel="noopener">' + st.name + " official carry info</a>";
+      }
+      if (reciprocityData.usccaUrl) {
+        links += '<a class="btn btn--red" href="' + reciprocityData.usccaUrl + '" target="_blank" rel="noopener">Check current law at the USCCA</a>';
+      }
+
+      panel.innerHTML =
+        '<p class="recip-panel__state">' + st.name + "</p>" +
+        '<p class="recip-panel__status recip-status--' + (st.status || "unknown") + '">' + meaning.label + "</p>" +
+        "<p>" + meaning.text + "</p>" +
+        (st.note ? '<p class="recip-panel__note">' + st.note + "</p>" : "") +
+        '<div class="recip-panel__links">' + links + "</div>" +
+        '<p class="recip-panel__disclaimer">Reciprocity changes. Verify with an official source before you travel armed. This is not legal advice.</p>';
+    }
+
+    Object.keys(geo.paths).forEach(function (abbr) {
+      var st = byAbbr[abbr] || { name: abbr, status: "unknown" };
+      var p = document.createElementNS(svgNS, "path");
+      p.setAttribute("d", geo.paths[abbr]);
+      p.setAttribute("class", "recip-state recip-status--" + (st.status || "unknown"));
+      p.setAttribute("data-state", abbr);
+      p.setAttribute("tabindex", "0");
+      p.setAttribute("role", "button");
+      p.setAttribute("aria-label", st.name + ": " + (RECIP_MEANING[st.status] || RECIP_MEANING.unknown).label);
+      p.addEventListener("click", function () { select(abbr); });
+      p.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") { e.preventDefault(); select(abbr); }
+      });
+      svg.appendChild(p);
+    });
+
+    Object.keys(geo.labels).forEach(function (abbr) {
+      var xy = geo.labels[abbr];
+      var t = document.createElementNS(svgNS, "text");
+      t.setAttribute("x", xy[0]);
+      t.setAttribute("y", xy[1] + 4);
+      t.setAttribute("class", "recip-label");
+      t.setAttribute("text-anchor", "middle");
+      t.setAttribute("aria-hidden", "true");
+      t.textContent = abbr;
+      t.addEventListener("click", function () { select(abbr); });
+      svg.appendChild(t);
+    });
+
+    host.innerHTML = "";
+    host.appendChild(svg);
+
+    // chip row for the states too small to tap on the map
+    var chipWrap = document.getElementById("recip-chips");
+    if (chipWrap) {
+      chipWrap.innerHTML = "";
+      RECIP_CHIPS.forEach(function (abbr) {
+        var st = byAbbr[abbr];
+        if (!st) return;
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "recip-chip recip-status--" + (st.status || "unknown");
+        b.setAttribute("data-state", abbr);
+        b.setAttribute("aria-label", st.name + ": " + (RECIP_MEANING[st.status] || RECIP_MEANING.unknown).label);
+        b.textContent = abbr;
+        b.addEventListener("click", function () { select(abbr); });
+        chipWrap.appendChild(b);
+      });
+    }
+
+    var asOf = document.getElementById("recip-asof");
+    if (asOf && reciprocityData.asOf) {
+      asOf.textContent = "Statuses last verified " + reciprocityData.asOf + ".";
+    }
+
+    var stat = document.getElementById("recip-static");
+    if (stat) stat.hidden = true;
+    var live = document.getElementById("recip-live");
+    if (live) live.hidden = false;
+
+    select("NC");
+  }
+
+  renderReciprocityMap();
+
   /* ---- Optional inquiry form ----
      The form on contact.html posts to a third-party form service (Formspree).
      Until a real endpoint is pasted into its action attribute, the form hides

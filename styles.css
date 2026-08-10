@@ -1075,3 +1075,171 @@ button { font: inherit; }
   opacity: 0.7;
   letter-spacing: 0.03em;
 }
+
+
+/* ==========================================================================
+   INTERACTIVE RECIPROCITY MAP
+   Colors come from reciprocity-data.js; geometry from us-map-paths.js.
+   Each status class sets --st (the fill/swatch color) plus a lighter text
+   color that stays readable on the dark background.
+   ========================================================================== */
+.recip-status--yes            { --st: #1faf46; color: #35c25a; }
+.recip-status--constitutional { --st: #2c51a9; color: #6f97e8; }
+.recip-status--restricted     { --st: #f2c322; color: #f2c322; }
+.recip-status--no             { --st: #ca264b; color: #e0505a; }
+.recip-status--home           { --st: #b9bec6; color: #b9bec6; }
+.recip-status--unknown        { --st: #4a4d52; color: #8f9195; }
+
+.recip-live { margin-top: 2.5rem; }
+
+.recip-legend {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.55rem 1.35rem;
+  margin-bottom: 1.5rem;
+}
+.recip-key {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+.recip-swatch {
+  width: 13px;
+  height: 13px;
+  margin-right: 0.5rem;
+  background: var(--st);
+  flex: 0 0 auto;
+}
+
+.recip-map {
+  background: var(--onyx-deep);
+  border: 1px solid var(--hairline-steel);
+  padding: 0.5rem;
+}
+.recip-svg { width: 100%; height: auto; display: block; }
+
+.recip-state {
+  fill: var(--st);
+  stroke: var(--onyx-deep);
+  stroke-width: 1;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.recip-state:hover { opacity: 0.72; }
+.recip-state:focus { outline: none; }
+.recip-state:focus-visible,
+.recip-state.is-selected {
+  stroke: var(--bone);
+  stroke-width: 2.5;
+}
+.recip-label {
+  fill: #ffffff;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  pointer-events: none;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.5);
+  stroke-width: 2.5px;
+}
+
+.recip-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+.recip-chip {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #fff;
+  background: var(--st);
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.7rem;
+  min-width: 46px;
+  cursor: pointer;
+}
+.recip-chip.is-selected { border-color: var(--bone); }
+
+.recip-hint {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--bone-dim);
+}
+
+.recip-panel {
+  margin-top: 1.75rem;
+  padding: 1.5rem;
+  background: var(--onyx-raised);
+  border-left: 3px solid var(--red);
+  text-align: left;
+}
+.recip-panel__state {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: var(--bone);
+}
+.recip-panel__status {
+  margin: 0.35rem 0 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+.recip-panel__status::before {
+  content: "";
+  width: 11px;
+  height: 11px;
+  margin-right: 0.5rem;
+  background: var(--st);
+  flex: 0 0 auto;
+}
+.recip-panel p { color: var(--bone-dim); }
+.recip-panel__note {
+  border-left: 2px solid var(--hairline-steel);
+  padding-left: 0.75rem;
+  font-size: 0.94rem;
+}
+.recip-panel__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.15rem 0 0.35rem;
+}
+.recip-panel__disclaimer {
+  margin-bottom: 0;
+  font-size: 0.82rem;
+  color: var(--steel-deep);
+}
+.recip-asof {
+  margin-top: 1rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--steel-deep);
+}
+
+@media (max-width: 620px) {
+  .recip-label { font-size: 18px; }
+  .recip-chip { min-width: 54px; padding: 0.55rem 0.75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .recip-state { transition: none; }
+}

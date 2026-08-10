@@ -108,8 +108,33 @@
       <h2 class="section-title reveal">NC Concealed Carry Reciprocity</h2>
       <p class="section-lede reveal">Where your North Carolina concealed handgun permit is honored.</p>
 
-      <img class="reciprocity-map reveal" src="assets/nc-reciprocity-map.png" alt="Map showing which states honor a North Carolina concealed handgun permit, current as of July 2026">
-      <p class="reciprocity-disclaimer">This information is provided as a service and does not constitute legal advice. Reciprocity changes over time &mdash; always verify current laws before carrying in another state. Map courtesy of USCCA, current as of 07/2026.</p>
+      <!-- Static image: shown if JavaScript is off, hidden once the
+           interactive map below renders successfully. -->
+      <div id="recip-static">
+        <img class="reciprocity-map reveal" src="assets/nc-reciprocity-map.png" alt="Map showing which states honor a North Carolina concealed handgun permit, current as of July 2026">
+      </div>
+
+      <!-- Interactive map. Colors come from reciprocity-data.js (edit that
+           file); the state outlines come from us-map-paths.js (generated,
+           don't edit). -->
+      <div id="recip-live" class="recip-live reveal" hidden>
+        <div class="recip-legend">
+          <span class="recip-key"><i class="recip-swatch recip-status--constitutional"></i>Yes &mdash; permitless carry state</span>
+          <span class="recip-key"><i class="recip-swatch recip-status--yes"></i>Yes</span>
+          <span class="recip-key"><i class="recip-swatch recip-status--restricted"></i>Yes, with restrictions</span>
+          <span class="recip-key"><i class="recip-swatch recip-status--no"></i>No</span>
+        </div>
+
+        <div id="recip-map" class="recip-map"></div>
+        <div id="recip-chips" class="recip-chips" aria-label="Smaller states"></div>
+        <p class="recip-hint">Tap a state to see whether your North Carolina permit is honored there.</p>
+
+        <div id="recip-panel" class="recip-panel" role="region" aria-live="polite" aria-label="Selected state details"></div>
+
+        <p id="recip-asof" class="recip-asof"></p>
+      </div>
+
+      <p class="reciprocity-disclaimer">This information is provided as a service and does not constitute legal advice. Reciprocity changes over time &mdash; always verify current laws before carrying in another state. Reciprocity data courtesy of USCCA, current as of 07/2026. <a href="assets/nc-reciprocity-map.png" target="_blank" rel="noopener">View the full USCCA map image &rarr;</a></p>
     </div>
   </section>
 
@@ -154,6 +179,8 @@
 </footer>
 
 <script src="schedule-data.js"></script>
+<script src="reciprocity-data.js"></script>
+<script src="us-map-paths.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
