@@ -187,11 +187,25 @@
     try {
       var raw = (typeof reviewsData !== "undefined" && Array.isArray(reviewsData))
         ? reviewsData : [];
-      items = raw
-        .filter(function (r) { return r && r.quote && String(r.quote).trim(); })
-        .sort(function (a, b) {
-          return String(b.date || "").localeCompare(String(a.date || ""));
-        });
+      items = raw.filter(function (r) { return r && r.quote && String(r.quote).trim(); });
+
+      // Show a handful at random rather than the whole list, so the section
+      // stays readable and repeat visitors see different reviews. Set the
+      // number in reviews-data.js (reviewsShowCount).
+      var show = (typeof reviewsShowCount === "number" && reviewsShowCount > 0)
+        ? reviewsShowCount : 3;
+      if (items.length > show) {
+        for (var i = items.length - 1; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = items[i]; items[i] = items[j]; items[j] = tmp;
+        }
+        items = items.slice(0, show);
+      }
+
+      // Within whatever got picked, show the newest first.
+      items.sort(function (a, b) {
+        return String(b.date || "").localeCompare(String(a.date || ""));
+      });
     } catch (err) {
       items = [];
     }
