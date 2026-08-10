@@ -416,8 +416,11 @@
       if (st.officialUrl) {
         links += '<a class="btn btn--outline" href="' + st.officialUrl + '" target="_blank" rel="noopener">' + st.name + " official carry info</a>";
       }
+      if (reciprocityData.lawUrl) {
+        links += '<a class="btn btn--red" href="' + reciprocityData.lawUrl + '" target="_blank" rel="noopener">Check current law at the USCCA</a>';
+      }
       if (reciprocityData.usccaUrl) {
-        links += '<a class="btn btn--red" href="' + reciprocityData.usccaUrl + '" target="_blank" rel="noopener">Check current law at the USCCA</a>';
+        links += '<a class="btn btn--outline" href="' + reciprocityData.usccaUrl + '" target="_blank" rel="noopener">Book a class with us</a>';
       }
 
       panel.innerHTML =
