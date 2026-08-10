@@ -431,6 +431,37 @@ button { font: inherit; }
 }
 .class-card__cta { margin-top: 1.25rem; }
 
+/* ---- Tappable class cards (jump to that class's scheduled date) ---- */
+.class-card--tappable { cursor: pointer; }
+.class-card--tappable:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+}
+.class-card__notice {
+  margin: 1.25rem 0 0;
+  padding: 0.8rem 0.9rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--bone);
+  background: rgba(224, 80, 90, 0.10);
+  border-left: 3px solid var(--red);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.class-card__notice.is-showing { opacity: 1; transform: translateY(0); }
+.class-card__notice strong { display: block; margin-bottom: 0.2rem; }
+
+.schedule-row.is-flagged { animation: onyx-flag 2.4s ease; }
+@keyframes onyx-flag {
+  0%, 100% { background-color: transparent; }
+  12%, 55% { background-color: rgba(224, 80, 90, 0.16); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .class-card__notice { transition: none; }
+  .schedule-row.is-flagged { animation: none; }
+}
+
 .reciprocity-map {
   margin-top: 2.5rem;
   max-width: 100%;
