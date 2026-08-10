@@ -462,6 +462,120 @@ button { font: inherit; }
   .schedule-row.is-flagged { animation: none; }
 }
 
+/* ==========================================================================
+   STUDENT REVIEWS  (content lives in reviews-data.js)
+   ========================================================================== */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+.review-card {
+  margin: 0;
+  padding: 1.75rem 1.5rem 1.4rem;
+  background: var(--onyx-raised);
+  border-top: 3px solid var(--red);
+  display: flex;
+  flex-direction: column;
+}
+.review-card__stars {
+  color: var(--red-bright);
+  line-height: 0;
+  margin-bottom: 0.9rem;
+}
+.review-card__stars svg {
+  width: 96px;
+  height: auto;
+  display: block;
+}
+.review-card blockquote {
+  margin: 0 0 1.15rem;
+  padding: 0;
+  border: 0;
+  font-size: 1.03rem;
+  line-height: 1.6;
+  color: var(--bone);
+}
+.review-card blockquote::before { content: "\201C"; }
+.review-card blockquote::after  { content: "\201D"; }
+.review-card figcaption {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+.review-card__class {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--steel);
+  letter-spacing: 0.05em;
+}
+.reviews-source {
+  margin-top: 2.25rem;
+  font-size: 0.92rem;
+  color: var(--bone-dim);
+  text-align: center;
+}
+.reviews-source a { color: var(--red-bright); }
+
+/* ==========================================================================
+   INQUIRY FORM  (contact.html — hidden until a form endpoint is set)
+   ========================================================================== */
+.inquiry-wrap { margin-top: 4rem; }
+.inquiry-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.1rem 1.35rem;
+  margin-top: 2.25rem;
+  text-align: left;
+}
+.inquiry-row { display: flex; flex-direction: column; }
+.inquiry-row--wide { grid-column: 1 / -1; }
+.inquiry-form label {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  margin-bottom: 0.45rem;
+}
+.inquiry-form label span {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--steel-deep);
+}
+.inquiry-form input,
+.inquiry-form select,
+.inquiry-form textarea {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--bone);
+  background: var(--onyx-deep);
+  border: 1px solid var(--hairline-steel);
+  border-radius: var(--radius-sm);
+}
+.inquiry-form input:focus,
+.inquiry-form select:focus,
+.inquiry-form textarea:focus {
+  outline: none;
+  border-color: var(--red-bright);
+}
+.inquiry-form textarea { resize: vertical; }
+.inquiry-form button[type="submit"] { grid-column: 1 / -1; justify-self: start; }
+.inquiry-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.95rem;
+  min-height: 1.2em;
+}
+.inquiry-status.is-ok  { color: var(--bone); }
+.inquiry-status.is-err { color: var(--red-bright); }
+
 .reciprocity-map {
   margin-top: 2.5rem;
   max-width: 100%;

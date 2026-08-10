@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://onyxdefenseacademy.com/sitemap.xml

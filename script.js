@@ -174,6 +174,59 @@
 
   renderSchedule();
 
+  /* ---- Student reviews ----
+     Reads window.reviewsData (defined in reviews-data.js) and renders it into
+     #reviews-list, newest first. If the list is empty or the file is missing,
+     the whole section hides itself so the page never shows an empty shell. */
+  function renderReviews() {
+    var section = document.getElementById("reviews");
+    var container = document.getElementById("reviews-list");
+    if (!section || !container) return;
+
+    var items = [];
+    try {
+      var raw = (typeof reviewsData !== "undefined" && Array.isArray(reviewsData))
+        ? reviewsData : [];
+      items = raw
+        .filter(function (r) { return r && r.quote && String(r.quote).trim(); })
+        .sort(function (a, b) {
+          return String(b.date || "").localeCompare(String(a.date || ""));
+        });
+    } catch (err) {
+      items = [];
+    }
+
+    if (!items.length) {
+      section.hidden = true;
+      return;
+    }
+    section.hidden = false;
+    container.innerHTML = "";
+
+    items.forEach(function (r) {
+      var card = document.createElement("figure");
+      card.className = "review-card reveal";
+      var attribution = r.name ? String(r.name) : "Verified student";
+      var label = r.classId ? '<span class="review-card__class">' + r.classId + "</span>" : "";
+      card.innerHTML =
+        '<div class="review-card__stars" aria-label="5 out of 5 stars">' +
+          '<svg viewBox="0 0 120 24" aria-hidden="true">' +
+            '<use href="#onyx-star" x="0"/><use href="#onyx-star" x="24"/>' +
+            '<use href="#onyx-star" x="48"/><use href="#onyx-star" x="72"/>' +
+            '<use href="#onyx-star" x="96"/>' +
+          "</svg>" +
+        "</div>" +
+        "<blockquote>" + String(r.quote) + "</blockquote>" +
+        '<figcaption>' + attribution + label + "</figcaption>";
+      container.appendChild(card);
+    });
+
+    // Newly built cards are invisible until this runs. Do not remove.
+    activateReveals(container);
+  }
+
+  renderReviews();
+
   /* ---- Class card -> jump to its scheduled date ----
      Tapping a pricing card scrolls down to that class's row on the calendar
      and flashes it. If that class has no date posted, a small notice fades
@@ -278,6 +331,46 @@
     if (!img) return;
     img.src = options[Math.floor(Math.random() * options.length)];
   });
+
+  /* ---- Optional inquiry form ----
+     The form on contact.html posts to a third-party form service (Formspree).
+     Until a real endpoint is pasted into its action attribute, the form hides
+     itself so visitors never see a contact form that silently goes nowhere.
+     See the comment in contact.html for the two-minute setup. */
+  var inquiryForm = document.getElementById("inquiry-form");
+  if (inquiryForm) {
+    var action = inquiryForm.getAttribute("action") || "";
+    var wrap = document.getElementById("inquiry-wrap");
+    if (action.indexOf("PASTE_YOUR_FORM_ID") !== -1 || !action) {
+      if (wrap) wrap.hidden = true;
+    } else {
+      inquiryForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var status = document.getElementById("inquiry-status");
+        var button = inquiryForm.querySelector("button[type=submit]");
+        if (button) { button.disabled = true; button.textContent = "Sending..."; }
+        fetch(action, {
+          method: "POST",
+          body: new FormData(inquiryForm),
+          headers: { Accept: "application/json" }
+        }).then(function (res) {
+          if (!res.ok) throw new Error("bad response");
+          inquiryForm.reset();
+          if (status) {
+            status.textContent = "Got it \u2014 we'll get back to you shortly. For anything urgent, text (910) 587-8450.";
+            status.className = "inquiry-status is-ok";
+          }
+        }).catch(function () {
+          if (status) {
+            status.textContent = "That didn't send. Please text or call (910) 587-8450 instead.";
+            status.className = "inquiry-status is-err";
+          }
+        }).then(function () {
+          if (button) { button.disabled = false; button.textContent = "Send Request"; }
+        });
+      });
+    }
+  }
 
   /* ---- SMS link compatibility ----
      Android reads the prefilled message with "?body=", but iOS needs

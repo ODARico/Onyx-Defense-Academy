@@ -13,6 +13,14 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://onyxdefenseacademy.com/contact.html">
 
+<meta property="og:image" content="https://onyxdefenseacademy.com/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Onyx Defense Academy — USCCA and NCDOJ certified firearms training in Autryville, NC">
+<meta property="og:site_name" content="Onyx Defense Academy">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://onyxdefenseacademy.com/assets/og-image.png">
+
 <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
 <link rel="icon" type="image/png" sizes="512x512" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -74,6 +82,61 @@
           <strong>Christian@onyxdefenseacademy.com</strong>
           <span>Best for detailed questions</span>
         </a>
+      </div>
+
+      <!-- ============================== INQUIRY FORM ==============================
+           This form is INACTIVE until you connect it to a form service. It stays
+           hidden from visitors until then, so nobody submits into a void.
+
+           TWO-MINUTE SETUP:
+           1. Go to formspree.io and make a free account (50 submissions/month).
+           2. Create a new form. It gives you an endpoint that looks like:
+                https://formspree.io/f/abcdwxyz
+           3. Paste that whole URL into the action="" attribute below, replacing
+              the PASTE_YOUR_FORM_ID placeholder.
+           4. Commit. The form appears on the site and submissions arrive in
+              your email.
+
+           Don't want a form at all? Delete this whole block. Call and text
+           still work exactly as they do now.
+           ========================================================================= -->
+      <div id="inquiry-wrap" class="inquiry-wrap" hidden>
+        <div class="divider"><svg viewBox="0 0 30 16" aria-hidden="true"><polyline points="2,2 10,8 2,14" fill="none" stroke="#e0505a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="16,2 24,8 16,14" fill="none" stroke="#e0505a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p class="eyebrow">Or Send It In Writing</p>
+        <h2 class="section-title reveal">Request A Class Date</h2>
+        <p class="section-lede reveal">Fill this out any time &mdash; day or night &mdash; and we'll get back to you with dates.</p>
+
+        <form id="inquiry-form" class="inquiry-form reveal" action="https://formspree.io/f/PASTE_YOUR_FORM_ID" method="POST">
+          <div class="inquiry-row">
+            <label for="inq-name">Your name</label>
+            <input id="inq-name" name="name" type="text" autocomplete="name" required>
+          </div>
+          <div class="inquiry-row">
+            <label for="inq-contact">Phone or email</label>
+            <input id="inq-contact" name="contact" type="text" autocomplete="tel" required>
+          </div>
+          <div class="inquiry-row">
+            <label for="inq-class">Which class?</label>
+            <select id="inq-class" name="class">
+              <option>Concealed Carry</option>
+              <option>Basic Handgun</option>
+              <option>Handgun One-on-One</option>
+              <option>NC Concealed Carry Legal Refresher</option>
+              <option>Mobile Notary</option>
+              <option>Not sure yet</option>
+            </select>
+          </div>
+          <div class="inquiry-row">
+            <label for="inq-people">How many people?</label>
+            <input id="inq-people" name="people" type="text" inputmode="numeric" placeholder="e.g. 4">
+          </div>
+          <div class="inquiry-row inquiry-row--wide">
+            <label for="inq-notes">Anything else? <span>(dates that work, location, questions)</span></label>
+            <textarea id="inq-notes" name="notes" rows="4"></textarea>
+          </div>
+          <button class="btn btn--red" type="submit">Send Request</button>
+          <p id="inquiry-status" class="inquiry-status" role="status"></p>
+        </form>
       </div>
 
       <!-- Facebook link set -->
