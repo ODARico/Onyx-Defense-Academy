@@ -111,7 +111,9 @@
       <!-- Static image: shown if JavaScript is off, hidden once the
            interactive map below renders successfully. -->
       <div id="recip-static">
-        <img class="reciprocity-map reveal" src="assets/nc-reciprocity-map.png" alt="Map showing which states honor a North Carolina concealed handgun permit, current as of July 2026">
+        <noscript>
+          <img class="reciprocity-map" src="assets/nc-reciprocity-map.png" alt="Map showing which states honor a North Carolina concealed handgun permit, current as of July 2026">
+        </noscript>
       </div>
 
       <!-- Interactive map. Colors come from reciprocity-data.js (edit that

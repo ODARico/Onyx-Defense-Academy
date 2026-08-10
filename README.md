@@ -1,144 +1,50 @@
 # Onyx Defense Academy — Website
 
-This is your new website. It's plain files (no software to buy, no monthly
-site-builder fee) so the only ongoing cost is what you already pay to renew
-`onyxdefenseacademy.com` each year.
+Plain HTML, CSS and JavaScript hosted free on GitHub Pages. No site-builder
+subscription — the only ongoing cost is renewing `onyxdefenseacademy.com`.
 
-## What's in this folder
+## The three files you actually edit
+
+| File | What you change in it |
+|---|---|
+| `schedule-data.js` | Class dates on the calendar |
+| `reviews-data.js` | Student reviews shown on the home page |
+| `reciprocity-data.js` | Which states honor an NC permit, and the "verified" date |
+
+Each one has full instructions in a comment at the top. You should not need to
+open anything else.
+
+## Everything else
 
 | File | What it's for |
 |---|---|
 | `index.html` | Home page |
-| `classes.html` | Classes, pricing, notary service &amp; schedule |
-| `about.html` | Meet Your Instructor + service area |
-| `contact.html` | Contact info |
-| `styles.css` | Colors, fonts, spacing (shared by all pages) |
-| `script.js` | Makes the schedule and menu work (shared by all pages) — you shouldn't need to touch this |
-| `schedule-data.js` | **The file you'll actually edit** to add class dates |
-| `assets/` | Your logo, certification badges, and photo |
+| `classes.html` | Classes, pricing, reciprocity map, class schedule |
+| `about.html` | About + credentials + service area |
+| `notary.html` | Additional services (mobile notary). Nav calls it "Services" |
+| `contact.html` | Contact info, plus an inquiry form that stays hidden until connected |
+| `styles.css` | Colors, fonts, spacing — shared by every page |
+| `script.js` | Makes the schedule, reviews, map and menu work — don't hand-edit |
+| `us-map-paths.js` | Generated map outlines — never edit |
+| `sitemap.xml`, `robots.txt` | Help search engines index the site |
+| `assets/` | Logo, badges, photo, share image |
 
-The site is now four separate pages instead of one long scrolling page, linked together by the navigation menu at the top. If you ever edit shared content — your phone number, for instance — remember it may appear on more than one page (e.g. both `index.html` and `contact.html`), so check both.
+## Things worth knowing
 
-## See it before you publish anything
+**The invisible-content trap.** Anything with class `reveal` starts invisible
+and fades in on scroll. If new content is built by JavaScript, it must call
+`activateReveals()` afterwards or it renders invisible with no error. This bit
+us once already — the details are commented in `script.js`.
 
-Just double-click `index.html` and it'll open in your browser. That's the
-real site — nothing else needs to be running. Edit any file, save it, and
-refresh the browser tab to see the change.
+**Shared content appears on more than one page.** The phone number, email and
+footer are in every HTML file. Change one, check the rest.
 
-## Adding a class date
+**Class names must match.** The four headings on `classes.html` have to match
+the `classType` values in `schedule-data.js` and the `classId` values in
+`reviews-data.js`, character for character, or the links between them break.
 
-Open `schedule-data.js` in any plain text editor (Notepad, TextEdit, or even
-right inside GitHub once it's online — see below). Follow the instructions
-written at the top of that file: copy one block, fill in the date/time/
-location, save. The website sorts and displays it automatically — you never
-need to touch `index.html`.
+**Reciprocity is legal information.** Re-verify `reciprocity-data.js` against
+an official source whenever you change it, and update the `asOf` date.
 
-## Adding your photo
-
-Drop a photo into the `assets` folder named exactly `christian-headshot.jpg`.
-It'll appear in the "Meet Your Instructor" section automatically. Until you
-add it, that spot just shows a simple placeholder mark — nothing looks broken.
-
-## What's already in the `assets` folder
-
-Your real logo and certification badges are already wired into the site —
-you don't need to touch these:
-
-| File | Where it's used |
-|---|---|
-| `logo.png` | Header and hero section |
-| `favicon.png` / `favicon-32.png` / `apple-touch-icon.png` | Browser tab icon, phone home-screen icon |
-| `badge-uscca.png` | "Meet Your Instructor" — USCCA seal |
-| `badge-ncdoj.png` | "Meet Your Instructor" — NC DOJ Justice Academy seal |
-| `badge-notary.png` | "Meet Your Instructor" — NC Notary Association seal |
-
-If you ever want to swap any of these for a higher-resolution or updated
-version, just replace the file — keep the same filename and the site
-picks it up automatically.
-
-## One thing to fix before you publish
-
-In `index.html`, search for the word `TODO` (your text editor's Find
-function, Ctrl+F or Cmd+F) — there's one spot where your Facebook page link
-needs to replace a placeholder `#`.
-
-## Putting it online for free, permanently
-
-This uses **GitHub Pages** — free hosting for exactly this kind of site,
-run by GitHub (a Microsoft-owned company used by millions of developers and
-businesses). No credit card required for this part, ever.
-
-**1. Create a free GitHub account** at github.com, if you don't have one.
-
-**2. Create a new repository**
-   - Click the **+** in the top right → **New repository**
-   - Name it anything (e.g. `onyx-website`)
-   - Set it to **Public**
-   - Click **Create repository**
-
-**3. Upload your files**
-   - On the new repository's page, click **uploading an existing file**
-   - Drag in `index.html`, `classes.html`, `about.html`, `contact.html`,
-     `styles.css`, `script.js`, `schedule-data.js`,
-     and the `assets` folder
-   - Click **Commit changes**
-
-**4. Turn on GitHub Pages**
-   - In your repository, go to **Settings** → **Pages**
-   - Under **Branch**, choose `main` and click **Save**
-   - GitHub gives you a working link immediately, like
-     `https://yourusername.github.io/onyx-website` — check that it works
-
-**5. Connect your existing domain**
-   - Still in **Settings** → **Pages**, find **Custom domain**, type
-     `onyxdefenseacademy.com`, and click **Save**
-   - Now go to wherever you manage the domain itself (whoever you pay the
-     annual fee to — GoDaddy, Namecheap, Google Domains, etc.) and find its
-     **DNS settings**
-   - Add four **A records**, all pointing your domain to GitHub's servers:
-
-     ```
-     185.199.108.153
-     185.199.109.153
-     185.199.110.153
-     185.199.111.153
-     ```
-
-   - This can take anywhere from a few minutes to a few hours to take effect
-   - Back in GitHub's **Settings → Pages**, once it shows a green checkmark
-     next to your domain, check the **Enforce HTTPS** box — this gives your
-     site the small lock icon browsers show for secure sites
-
-That's it — from then on, editing a file in GitHub (or uploading a new one)
-updates your live site automatically within a minute or two.
-
-## Why this instead of Google Sites again
-
-Your files live in a repository you own and can download a full backup of
-at any time (**Code → Download ZIP** on the repository page). If anything
-ever looked wrong, you'd be able to see exactly what changed and when —
-which is the protection you didn't have before.
-
-## If something looks off
-
-**Photos/logo/badges not showing up, but the text and colors look right:**
-This almost always means the `assets` folder didn't actually upload — GitHub's
-drag-and-drop uploader can silently skip folders if you drag them in wrong.
-To check: go to your repository on github.com and look at the file list. You
-should see a folder literally named `assets` sitting next to `index.html`.
-Click into it — you should see `logo.png`, `badge-uscca.png`, `badge-ncdoj.png`,
-`badge-notary.png`, and a few icon files.
-
-- **If `assets` isn't there at all:** go to **Add file → Upload files**, then
-  drag the `assets` folder itself (not its individual contents) into the
-  upload box. Most browsers will preserve the folder when you drag the whole
-  folder in — dragging loose files one at a time from inside it is what
-  usually loses the folder structure.
-- **If `assets` exists but files are missing or misnamed:** click into it,
-  use **Add file → Upload files** from inside that folder, and add whatever's
-  missing. Filenames must match exactly, including lowercase — `Logo.png` and
-  `logo.png` are different files as far as your live site is concerned.
-
-Open `index.html` in your browser and check the browser's "console" (right
-click the page → Inspect → Console tab) for red error text — or just send
-the files back to whoever helped you build this.
+**Deploys.** Commit, wait about a minute, then hard-refresh (Ctrl+Shift+R).
+Upload a whole batch in one commit rather than one file at a time.

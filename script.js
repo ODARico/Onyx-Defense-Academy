@@ -383,11 +383,27 @@
   // Small states get a tap target in a chip row instead of an on-map label.
   var RECIP_CHIPS = ["VT","NH","MA","RI","CT","NJ","DE","MD","DC"];
 
+  // If the interactive map can't run, drop the original USCCA image in as a
+  // fallback. It is NOT in the page markup by default (only inside <noscript>)
+  // so browsers don't download 400KB of image that then gets hidden.
+  function showStaticMapFallback() {
+    var stat = document.getElementById("recip-static");
+    if (!stat || stat.querySelector("img")) return;
+    var img = document.createElement("img");
+    img.className = "reciprocity-map reveal is-visible";
+    img.src = "assets/nc-reciprocity-map.png";
+    img.alt = "Map showing which states honor a North Carolina concealed handgun permit, current as of July 2026";
+    stat.appendChild(img);
+  }
+
   function renderReciprocityMap() {
     var host = document.getElementById("recip-map");
     var panel = document.getElementById("recip-panel");
     if (!host || !panel) return;
-    if (typeof usMapGeometry === "undefined" || typeof reciprocityData === "undefined") return;
+    if (typeof usMapGeometry === "undefined" || typeof reciprocityData === "undefined") {
+      showStaticMapFallback();
+      return;
+    }
 
     var byAbbr = {};
     (reciprocityData.states || []).forEach(function (st) { byAbbr[st.abbr] = st; });
