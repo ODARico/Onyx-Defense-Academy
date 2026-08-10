@@ -151,6 +151,7 @@
       const meta = CLASS_LABELS[item.classType] || { tag: "Class" };
       const row = document.createElement("div");
       row.className = "schedule-row reveal";
+      row.setAttribute("data-class-type", item.classType);
       row.innerHTML =
         '<div class="schedule-row__date"><span class="weekday">' + weekday + '</span>' + rest + '</div>' +
         '<div class="schedule-row__info">' +
@@ -172,6 +173,96 @@
   }
 
   renderSchedule();
+
+  /* ---- Class card -> jump to its scheduled date ----
+     Tapping a pricing card scrolls down to that class's row on the calendar
+     and flashes it. If that class has no date posted, a small notice fades
+     in inside the card pointing at the Text To Inquire button instead.
+     Card headings must match the classType values used in schedule-data.js. */
+  function findScheduleRow(classType) {
+    var rows = document.querySelectorAll(".schedule-row");
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i].getAttribute("data-class-type") === classType) return rows[i];
+    }
+    return null;
+  }
+
+  function scrollToRow(el) {
+    var header = document.querySelector(".site-header");
+    var offset = (header ? header.offsetHeight : 0) + 20;
+    var top = el.getBoundingClientRect().top + window.pageYOffset - offset;
+    var reduce = window.matchMedia
+      && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    try {
+      window.scrollTo({ top: top, behavior: reduce ? "auto" : "smooth" });
+    } catch (err) {
+      // Very old browsers don't accept the options object.
+      window.scrollTo(0, top);
+    }
+  }
+
+  function hideNoticeLater(notice) {
+    if (notice._hideTimer) window.clearTimeout(notice._hideTimer);
+    notice._hideTimer = window.setTimeout(function () {
+      notice.classList.remove("is-showing");
+    }, 7000);
+  }
+
+  function showNoDateNotice(card) {
+    var notice = card.querySelector(".class-card__notice");
+    if (!notice) {
+      notice = document.createElement("p");
+      notice.className = "class-card__notice";
+      notice.setAttribute("role", "status");
+      notice.innerHTML =
+        "<strong>No date on the calendar for this one yet.</strong> " +
+        "Tap Text To Inquire below &mdash; private dates are booked by request.";
+      var cta = card.querySelector(".class-card__cta");
+      if (cta) card.insertBefore(notice, cta);
+      else card.appendChild(notice);
+    }
+    // force a reflow so the fade re-runs on repeat taps
+    notice.classList.remove("is-showing");
+    void notice.offsetWidth;
+    notice.classList.add("is-showing");
+    hideNoticeLater(notice);
+  }
+
+  document.querySelectorAll(".class-card").forEach(function (card) {
+    var heading = card.querySelector("h3");
+    if (!heading) return;
+    var classType = heading.textContent.trim();
+
+    card.classList.add("class-card--tappable");
+    card.setAttribute("role", "button");
+    card.setAttribute("tabindex", "0");
+    card.setAttribute("aria-label", "Show scheduled dates for " + classType);
+
+    function activate(e) {
+      // let the Text To Inquire button do its own thing
+      if (e.target && e.target.closest && e.target.closest("a")) return;
+      var row = findScheduleRow(classType);
+      if (row) {
+        scrollToRow(row);
+        row.classList.remove("is-flagged");
+        void row.offsetWidth;
+        row.classList.add("is-flagged");
+        window.setTimeout(function () {
+          row.classList.remove("is-flagged");
+        }, 2400);
+      } else {
+        showNoDateNotice(card);
+      }
+    }
+
+    card.addEventListener("click", activate);
+    card.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        activate(e);
+      }
+    });
+  });
 
   /* ---- Rotate promotional offer images ----
      Each offer link can list several image options in data-offer-images
