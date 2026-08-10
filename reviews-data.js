@@ -34,7 +34,19 @@
 
    To remove a review, delete its whole block (including the { and }).
    If this list is empty, the whole reviews section hides itself automatically.
+
+   ---------------------------------------------------------------------------
+   HOW MANY SHOW AT ONCE
+   ---------------------------------------------------------------------------
+   Keep ALL your reviews in the list below -- the site does not show them all at
+   once. On every page load it picks a few at random, so the section stays a
+   readable size and repeat visitors see different ones. Change the number in
+   reviewsShowCount just below to show more or fewer. If you have fewer reviews
+   than that number, it simply shows all of them.
    ============================================================================ */
+
+// How many reviews to show at a time. 3 fits neatly across on a desktop.
+const reviewsShowCount = 3;
 
 const reviewsData = [
 
