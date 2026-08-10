@@ -12,11 +12,14 @@
    4. Save the file
 
    FIELD GUIDE:
-   - classType : must be EXACTLY one of these four (spelling/capitalization matters):
+   - classType : must be EXACTLY one of these seven (spelling/capitalization matters):
                  "Concealed Carry"
                  "Basic Handgun"
                  "Handgun One-on-One"
                  "NC Concealed Carry Legal Refresher"
+                 "Handgun Cleaning Basics"
+                 "Real Estate Agent Safety"
+                 "ODA Children's Firearms & Safety Fundamentals"
    - date      : the class date, formatted "YYYY-MM-DD"  (e.g. September 12, 2026 = "2026-09-12")
    - time      : whatever you want shown, e.g. "9:00 AM - 6:00 PM"
    - location  : where it's happening, e.g. "a range or location near you"

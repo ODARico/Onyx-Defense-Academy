@@ -17,12 +17,15 @@
    - name    : how you want them credited, e.g. "Austin B." First name and last
                initial reads as respectful and keeps a student's full name off
                a public page. Leave "" and the card shows "Verified student".
-   - classId : which class they took. Must be EXACTLY one of these four, or ""
+   - classId : which class they took. Must be EXACTLY one of these seven, or ""
                to leave the card unlabeled:
                  "Concealed Carry"
                  "Basic Handgun"
                  "Handgun One-on-One"
                  "NC Concealed Carry Legal Refresher"
+                 "Handgun Cleaning Basics"
+                 "Real Estate Agent Safety"
+                 "ODA Children's Firearms & Safety Fundamentals"
                Every review currently in this file was from a Concealed Carry
                class. Set this per review as you add other courses.
    - date    : "YYYY-MM-DD", the date of the CLASS (not the review). Used for

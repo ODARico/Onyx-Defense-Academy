@@ -85,11 +85,14 @@
   /* ---- Schedule rendering ----
      Reads window.scheduleData (defined in schedule-data.js) and renders
      it into #schedule-list, soonest date first, past dates dropped. */
-  const CLASS_LABELS = {
+  var CLASS_LABELS = {
     "Concealed Carry": { tag: "CCH Permit Course" },
     "Basic Handgun": { tag: "Beginner Friendly" },
     "Handgun One-on-One": { tag: "Private Session" },
-    "NC Concealed Carry Legal Refresher": { tag: "Classroom Only" }
+    "NC Concealed Carry Legal Refresher": { tag: "Classroom Only" },
+    "Handgun Cleaning Basics": { tag: "Maintenance" },
+    "Real Estate Agent Safety": { tag: "Professional Safety" },
+    "ODA Children's Firearms & Safety Fundamentals": { tag: "Youth Class" }
   };
 
   // Parses "YYYY-MM-DD" as a LOCAL date (not UTC), so the date shown

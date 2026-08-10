@@ -390,6 +390,10 @@ button { font: inherit; }
   margin-top: 3rem;
 }
 @media (max-width: 900px) { .class-grid { grid-template-columns: 1fr 1fr; } }
+/* With 7 cards the last one lands alone on its own row -- centre it so it
+   reads as intentional rather than orphaned. Harmless at other card counts. */
+.class-grid > :last-child:nth-child(3n + 1) { grid-column: 2; }
+@media (max-width: 900px) { .class-grid > :last-child:nth-child(3n + 1) { grid-column: auto; } }
 @media (max-width: 640px) { .class-grid { grid-template-columns: 1fr; } }
 
 .class-card {
@@ -617,6 +621,8 @@ button { font: inherit; }
   margin-top: 2.5rem;
 }
 @media (max-width: 760px) { .teaser-grid { grid-template-columns: 1fr; } }
+.teaser-grid > :last-child:nth-child(3n + 1) { grid-column: 2; }
+@media (max-width: 760px) { .teaser-grid > :last-child:nth-child(3n + 1) { grid-column: auto; } }
 
 .teaser-card {
   background: var(--onyx-raised);

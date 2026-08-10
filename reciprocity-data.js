@@ -47,12 +47,7 @@ const reciprocityData = {
   // Date these statuses were last verified. Shown on the site.
   asOf: "07/2026",
 
-  // Where visitors go for authoritative, current law -- the USCCA's own
-  // reciprocity and state gun law tool. This is a reference link, NOT your
-  // booking page; keep it pointed at their map.
-  lawUrl: "https://www.usconcealedcarry.com/resources/ccw_reciprocity_map/",
-
-  // Your USCCA instructor listing. Used for the "book a class" link only.
+  // Where visitors go for authoritative, current information.
   usccaUrl: "https://www.usconcealedcarry.com/firearms-training/instructors/north-carolina-instructors/onyx-defense-academy-llc-3016131/",
 
   states: [
