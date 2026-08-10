@@ -27,24 +27,48 @@
   const yearEl = document.getElementById("footer-year");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---- Scroll reveal ---- */
-  const revealEls = document.querySelectorAll(".reveal");
-  if ("IntersectionObserver" in window && revealEls.length) {
-    const observer = new IntersectionObserver(
+  /* ---- Scroll reveal ----
+     !! KNOWN TRAP -- READ THIS BEFORE ADDING A NEW SECTION TO THE SITE !!
+
+     Anything with class "reveal" starts at opacity:0 (see styles.css, the
+     ".reveal" rule) and only becomes visible once it gets tagged "is-visible".
+
+     The old version of this code grabbed its list of .reveal elements ONCE, at
+     page load. That meant any HTML built LATER by JavaScript -- like the class
+     schedule rows -- was created already invisible and stayed that way forever.
+     No error, no warning, nothing in the console. The page just looked empty.
+     That is exactly what happened in Aug 2026: the Aug 29 class was sitting on
+     the page the whole time at zero opacity.
+
+     The fix: activateReveals() below can be called AGAIN, any time. So if you
+     ever add a new JS-drawn section (shop, testimonials, gallery, whatever),
+     call activateReveals(yourContainer) right after you build it -- or simply
+     don't put class "reveal" on generated elements at all. */
+  var revealObserver = null;
+  if ("IntersectionObserver" in window) {
+    revealObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
+            revealObserver.unobserve(entry.target);
           }
         });
       },
       { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
     );
-    revealEls.forEach(function (el) { observer.observe(el); });
-  } else {
-    revealEls.forEach(function (el) { el.classList.add("is-visible"); });
   }
+
+  // Call this any time new .reveal elements are added to the page.
+  function activateReveals(root) {
+    (root || document).querySelectorAll(".reveal").forEach(function (el) {
+      if (el.classList.contains("is-visible")) return;
+      if (revealObserver) revealObserver.observe(el);
+      else el.classList.add("is-visible");
+    });
+  }
+
+  activateReveals();
 
   /* ---- Instructor photo fallback ----
      If assets/christian-headshot.jpg is missing or fails to load, show the
@@ -126,7 +150,7 @@
       const { weekday, rest } = formatDate(item._date);
       const meta = CLASS_LABELS[item.classType] || { tag: "Class" };
       const row = document.createElement("div");
-      row.className = "schedule-row reveal is-visible";
+      row.className = "schedule-row reveal";
       row.innerHTML =
         '<div class="schedule-row__date"><span class="weekday">' + weekday + '</span>' + rest + '</div>' +
         '<div class="schedule-row__info">' +
@@ -142,6 +166,9 @@
         '</div>';
       container.appendChild(row);
     });
+
+    // Newly built rows are invisible until this runs. Do not remove.
+    activateReveals(container);
   }
 
   renderSchedule();
