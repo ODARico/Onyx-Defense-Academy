@@ -86,7 +86,7 @@
      Reads window.scheduleData (defined in schedule-data.js) and renders
      it into #schedule-list, soonest date first, past dates dropped. */
   var CLASS_LABELS = {
-    "Concealed Carry": { tag: "CCH Permit Course" },
+    "NC Concealed Carry Course": { tag: "CCH Permit Course" },
     "Basic Handgun": { tag: "Beginner Friendly" },
     "Handgun One-on-One": { tag: "Private Session" },
     "NC Concealed Carry Legal Refresher": { tag: "Classroom Only" },

@@ -19,7 +19,7 @@
                a public page. Leave "" and the card shows "Verified student".
    - classId : which class they took. Must be EXACTLY one of these seven, or ""
                to leave the card unlabeled:
-                 "Concealed Carry"
+                 "NC Concealed Carry Course"
                  "Basic Handgun"
                  "Handgun One-on-One"
                  "NC Concealed Carry Legal Refresher"
@@ -52,91 +52,91 @@ const reviewsData = [
   {
     quote: "Rico is absolutely amazing as an instructor. He’s 100% professional and is able to make the info understandable to everyone. I absolutely recommend him to someone new or knowledgeable.",
     name: "Austin B.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2026-01-24"
   },
 
   {
     quote: "Christian is very knowledgeable and explains the material clearly. The class was well organized, structured effectively, and easy to follow. I felt comfortable asking questions, and the information was presented in a way that was both informative and engaging. Overall, it was an excellent class experience.",
     name: "Shelby S.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2026-01-24"
   },
 
   {
     quote: "Great instructor",
     name: "Dewayne C.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2025-10-18"
   },
 
   {
     quote: "Great instructor we had a great time and learned a lot.",
     name: "Ricardo A.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2025-10-18"
   },
 
   {
     quote: "Class was educational and concise. Range time was great afterwards.",
     name: "Gabriela J.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2025-10-18"
   },
 
   {
     quote: "Learned so much, and had a great time. 100% recommend!",
     name: "Cortney F.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2025-06-28"
   },
 
   {
     quote: "This was an excellent class and the instructor was very experienced in his teaching style and the knowledge of all different types of hand guns.",
     name: "Terry C.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2025-05-17"
   },
 
   {
     quote: "Instructor was great, knowledgeable and able to answer all questions.",
     name: "Jordan H.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2024-01-06"
   },
 
   {
     quote: "Great instruction, well taught and prepared me for concealed carry",
     name: "William P.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2023-07-22"
   },
 
   {
     quote: "A very well organized and carried out class very interactive and easy to understand.",
     name: "Nathaniel G.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2023-07-22"
   },
 
   {
     quote: "Great course and instructor. Very knowledgeable and elaborates on any questions asked.",
     name: "Dedrick M.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2023-06-24"
   },
 
   {
     quote: "Very professional and thorough instructor! Entertained any questions without compromise or loss of focus. Created an excellent class room environment allowing for a positive learning environment. I fully recommend this instructor.",
     name: "Seldon W.",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2023-05-27"
   },
 
   {
     quote: "Absolutely a great class!! The instructor Mr. Rios was very knowledgeable and made the material easy to understand. Safety was definitely implemented vigorously throughout the class. 10 out of 10 would recommend this class!",
     name: "",
-    classId: "Concealed Carry",
+    classId: "NC Concealed Carry Course",
     date: "2023-05-27"
   },
 

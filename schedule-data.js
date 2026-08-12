@@ -13,7 +13,7 @@
 
    FIELD GUIDE:
    - classType : must be EXACTLY one of these seven (spelling/capitalization matters):
-                 "Concealed Carry"
+                 "NC Concealed Carry Course"
                  "Basic Handgun"
                  "Handgun One-on-One"
                  "NC Concealed Carry Legal Refresher"
@@ -46,7 +46,7 @@ const scheduleData = [
     registerUrl: "https://www.usconcealedcarry.com/firearms-training/instructors/north-carolina-instructors/onyx-defense-academy-llc-3016131/class-autryville-nc-nc-concealed-carry-legal-refresher-92cc0/"
   },
   {
-    classType: "Concealed Carry",
+    classType: "NC Concealed Carry Course",
     date: "2026-08-29",
     time: "8:00 AM",
     location: "Autryville, NC",
@@ -56,7 +56,7 @@ const scheduleData = [
    
   // EXAMPLE — copy this block for classes without a USCCA registration link:
   // {
-  //   classType: "Concealed Carry",
+  //   classType: "NC Concealed Carry Course",
   //   date: "2026-09-12",
   //   time: "9:00 AM - 6:00 PM",
   //   location: "a range or location near you",
