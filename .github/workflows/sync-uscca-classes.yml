@@ -1,1 +1,46 @@
+name: Sync USCCA Classes
 
+# Runs once a day and checks your USCCA instructor page for classes not yet
+# on your site. If it finds any, it opens a pull request for you to review --
+# it never edits your live site directly. See the comments at the top of
+# .github/scripts/sync-uscca-classes.js for the full explanation of why.
+
+on:
+  schedule:
+    - cron: "0 13 * * *" # once daily, ~9am Eastern (adjust the hour if you want it earlier/later -- this is in UTC)
+  workflow_dispatch: {} # lets you click "Run workflow" in the Actions tab to test it any time
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check USCCA for new classes
+        run: node .github/scripts/sync-uscca-classes.js
+
+      - name: Open a pull request if anything changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "Add class(es) found on USCCA"
+          title: "New class(es) posted on USCCA -- review before merging"
+          body: |
+            This pull request was opened automatically after today's check of your
+            [USCCA instructor page](https://www.usconcealedcarry.com/firearms-training/instructors/north-carolina-instructors/onyx-defense-academy-llc-3016131/).
+
+            **What to do:** click the **Files changed** tab above to see exactly what's
+            being added to `schedule-data.js`. If it looks right, click **Merge pull
+            request**. If anything looks off, click **Close pull request** instead --
+            nothing changes on your live site either way until you merge.
+          branch: uscca-sync
+          delete-branch: true
