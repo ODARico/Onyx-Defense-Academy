@@ -433,8 +433,7 @@ button { font: inherit; }
   padding-top: 1rem;
   margin-top: 1rem;
 }
-.class-card__cta-row { display: flex; gap: 0.6rem; margin-top: 1.25rem; }
-.class-card__cta-row .btn { flex: 1; padding-left: 0.8em; padding-right: 0.8em; }
+.class-card__cta { margin-top: 1.25rem; }
 
 /* ---- Tappable class cards (jump to that class's scheduled date) ---- */
 .class-card--tappable { cursor: pointer; }
