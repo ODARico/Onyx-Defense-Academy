@@ -92,7 +92,8 @@
     "NC Concealed Carry Legal Refresher": { tag: "Classroom Only" },
     "Handgun Cleaning Basics": { tag: "Maintenance" },
     "Real Estate Agent Safety": { tag: "Professional Safety" },
-    "ODA Children's Firearms & Safety Fundamentals": { tag: "Youth Class" }
+    "ODA Children's Firearms & Safety Fundamentals": { tag: "Youth Class" },
+    "Private Concealed Carry Course": { tag: "Private Group" }
   };
 
   // Parses "YYYY-MM-DD" as a LOCAL date (not UTC), so the date shown
