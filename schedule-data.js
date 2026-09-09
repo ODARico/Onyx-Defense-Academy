@@ -80,6 +80,14 @@ const scheduleData = [
     notes: "",
     registerUrl: "https://www.usconcealedcarry.com/firearms-training/instructors/north-carolina-instructors/onyx-defense-academy-llc-3016131/class-autryville-nc-nc-concealed-carry-course-bd999/"
   },
+     {
+    classType: "NC Concealed Carry Legal Refresher",
+    date: "2026-10-24",
+    time: "7:00 AM - 11:00 AM",
+    location: "Autryville, NC",
+    notes: "",
+    registerUrl: "https://www.usconcealedcarry.com/firearms-training/instructors/north-carolina-instructors/onyx-defense-academy-llc-3016131/class-autryville-nc-nc-concealed-carry-legal-refresher-9c076/"
+  },
   // EXAMPLE — copy this block for classes without a USCCA registration link:
   // {
   //   classType: "NC Concealed Carry Course",
