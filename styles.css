@@ -1029,18 +1029,15 @@ button { font: inherit; }
   color: var(--bone-dim);
 }
 .social-row a {
-  width: 40px; height: 40px;
-  border: 1px solid var(--hairline-steel);
-  border-radius: 50%;
+  width: 36px; height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
-  color: var(--bone);
-  transition: border-color 0.15s ease, color 0.15s ease;
+  transition: transform 0.15s ease;
 }
-.social-row a:hover { border-color: var(--red-bright); color: var(--red-bright); }
-.social-row svg { width: 18px; height: 18px; }
+.social-row a:hover { transform: scale(1.08); }
+.social-row svg { width: 36px; height: 36px; }
 
 /* ==========================================================================
    FOOTER
@@ -1081,6 +1078,22 @@ button { font: inherit; }
   color: var(--bone-dim);
   opacity: 0.7;
   letter-spacing: 0.03em;
+}
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.footer-social a { display: inline-flex; transition: transform 0.15s ease; }
+.footer-social a:hover { transform: scale(1.08); }
+.footer-social svg { width: 26px; height: 26px; }
+.footer-social span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
 }
 
 
