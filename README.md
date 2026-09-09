@@ -21,7 +21,7 @@ open anything else.
 | `index.html` | Home page |
 | `classes.html` | Classes, pricing, reciprocity map, class schedule |
 | `about.html` | About + credentials + service area |
-| `notary.html` | Additional services (mobile notary). Nav calls it "Services" |
+| `services.html` | Additional services (mobile notary) |
 | `contact.html` | Contact info, plus an inquiry form that stays hidden until connected |
 | `styles.css` | Colors, fonts, spacing — shared by every page |
 | `script.js` | Makes the schedule, reviews, map and menu work — don't hand-edit |
