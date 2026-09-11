@@ -92,6 +92,98 @@
     </div>
   </section>
 
+  <!-- ============================== FIND MY CLASS QUIZ ============================== -->
+  <section class="section section--alt" id="find-my-class">
+    <div class="container">
+      <div class="divider"><svg viewBox="0 0 30 16" aria-hidden="true"><polyline points="2,2 10,8 2,14" fill="none" stroke="#e0505a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="16,2 24,8 16,14" fill="none" stroke="#e0505a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <p class="eyebrow">Not Sure Where To Start?</p>
+      <h2 class="section-title reveal">Find My Class</h2>
+      <p class="section-lede reveal">Answer four quick questions and we'll point you to the right one.</p>
+
+      <div class="quiz-card reveal">
+        <div class="quiz-progress">
+          <div class="quiz-progress__bar"><div id="quiz-progress-fill" class="quiz-progress__fill"></div></div>
+          <span id="quiz-progress-label" class="quiz-progress__label">Question 1 of 4</span>
+        </div>
+
+        <div id="quiz-question-view">
+          <h3 id="quiz-prompt" class="quiz-prompt"></h3>
+          <div id="quiz-options" class="quiz-options"></div>
+          <button id="quiz-back" class="btn btn--outline quiz-back" type="button" hidden>&larr; Back</button>
+        </div>
+
+        <div id="quiz-result-view" class="quiz-result" hidden>
+          <p class="eyebrow">We'd Recommend</p>
+          <h3 id="quiz-result-name" class="quiz-result__name"></h3>
+          <p id="quiz-result-price" class="quiz-result__price"></p>
+          <p id="quiz-result-reason" class="quiz-result__reason"></p>
+          <div class="quiz-result__cta">
+            <a id="quiz-result-text" class="btn btn--red" href="#">Text About This Class</a>
+            <a id="quiz-result-email" class="btn btn--outline" href="#">Email About This Class</a>
+          </div>
+          <button id="quiz-restart" class="btn btn--outline quiz-restart" type="button">Start Over</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== GROUP COST CALCULATOR ============================== -->
+  <section class="section" id="cost-calculator">
+    <div class="container">
+      <div class="divider"><svg viewBox="0 0 30 16" aria-hidden="true"><polyline points="2,2 10,8 2,14" fill="none" stroke="#e0505a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><polyline points="16,2 24,8 16,14" fill="none" stroke="#e0505a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <p class="eyebrow">Planning For A Group?</p>
+      <h2 class="section-title reveal">Group Cost Calculator</h2>
+      <p class="section-lede reveal">Pick a class and see an estimated total, including any range fees.</p>
+
+      <div class="calc-card reveal">
+        <div class="calc-field">
+          <label for="calc-class">Class</label>
+          <select id="calc-class"><option value="">Choose a class&hellip;</option></select>
+        </div>
+
+        <div id="calc-count-field" class="calc-field" hidden>
+          <label id="calc-count-label" for="calc-count">Number Of People</label>
+          <input id="calc-count" type="number" min="1" step="1" value="1">
+        </div>
+
+        <div id="calc-hours-field" class="calc-field" hidden>
+          <label for="calc-hours">Hours</label>
+          <select id="calc-hours"></select>
+        </div>
+
+        <div id="calc-min-note" class="calc-note" hidden></div>
+
+        <div id="calc-livefire-step1" class="calc-question" hidden>
+          <p class="calc-question__prompt">Will this session include time at a range, or is it classroom/skills work only?</p>
+          <div class="calc-question__options">
+            <button type="button" class="quiz-option" data-answer="no">Classroom Only</button>
+            <button type="button" class="quiz-option" data-answer="yes">Yes, There Will Be Range Time</button>
+          </div>
+        </div>
+
+        <div id="calc-livefire-step2" class="calc-question" hidden>
+          <p class="calc-question__prompt">Do you already have a safe, legal place to shoot, or would you like to use our range?</p>
+          <div class="calc-question__options">
+            <button type="button" class="quiz-option" data-answer="own">I Have My Own Location</button>
+            <button type="button" class="quiz-option" data-answer="ours">Use Your Range</button>
+          </div>
+        </div>
+
+        <div id="calc-result" class="calc-result" hidden>
+          <div class="calc-total-row">
+            <span>Estimated Total</span>
+            <strong id="calc-total"></strong>
+          </div>
+          <p id="calc-breakdown" class="calc-breakdown"></p>
+          <div class="calc-cta">
+            <a id="calc-text" class="btn btn--red" href="#">Text About This</a>
+            <a id="calc-email" class="btn btn--outline" href="#">Email About This</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============================== CLASSES ============================== -->
   <section class="section" id="pricing">
     <div class="container">
@@ -272,6 +364,8 @@
 <script src="schedule-data.js"></script>
 <script src="reciprocity-data.js"></script>
 <script src="us-map-paths.js"></script>
+<script src="quiz-data.js"></script>
+<script src="calculator-data.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

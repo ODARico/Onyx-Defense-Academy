@@ -559,6 +559,299 @@
     }
   }
 
+  /* ---- Find My Class quiz ----
+     Reads window.quizQuestions and recommendClass() from quiz-data.js and
+     renders one question at a time, then a result screen.
+
+     Note on the invisible-content trap: the question view is present in the
+     page at load time (its wrapping .quiz-card has the "reveal" class and
+     gets picked up by the normal fade-in), but the RESULT view is toggled
+     on later by this script, after that initial pass already ran. Rather
+     than remembering to call activateReveals() every time a result shows,
+     #quiz-result-view and everything inside it simply never has the
+     "reveal" class at all -- so there's nothing for the fade-in system to
+     miss, and it can't render invisible. */
+  (function initQuiz() {
+    var promptEl = document.getElementById("quiz-prompt");
+    var optionsEl = document.getElementById("quiz-options");
+    var backBtn = document.getElementById("quiz-back");
+    var questionView = document.getElementById("quiz-question-view");
+    var resultView = document.getElementById("quiz-result-view");
+    var progressFill = document.getElementById("quiz-progress-fill");
+    var progressLabel = document.getElementById("quiz-progress-label");
+    var restartBtn = document.getElementById("quiz-restart");
+
+    if (!promptEl || typeof quizQuestions === "undefined" || typeof recommendClass !== "function") return;
+
+    var current = 0;
+    var answers = {};
+
+    function renderQuestion() {
+      var q = quizQuestions[current];
+      promptEl.textContent = q.prompt;
+      optionsEl.innerHTML = "";
+      q.options.forEach(function (opt) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "quiz-option" + (answers[q.id] === opt.value ? " is-selected" : "");
+        btn.textContent = opt.label;
+        btn.addEventListener("click", function () {
+          answers[q.id] = opt.value;
+          if (current < quizQuestions.length - 1) {
+            current++;
+            renderQuestion();
+          } else {
+            showResult();
+          }
+        });
+        optionsEl.appendChild(btn);
+      });
+      backBtn.hidden = current === 0;
+      progressFill.style.width = Math.round(((current + 1) / quizQuestions.length) * 100) + "%";
+      progressLabel.textContent = "Question " + (current + 1) + " of " + quizQuestions.length;
+    }
+
+    backBtn.addEventListener("click", function () {
+      if (current > 0) {
+        current--;
+        renderQuestion();
+      }
+    });
+
+    function findClassCard(classType) {
+      var cards = document.querySelectorAll(".class-card");
+      for (var i = 0; i < cards.length; i++) {
+        var h3 = cards[i].querySelector("h3");
+        if (h3 && h3.textContent.trim() === classType) return cards[i];
+      }
+      return null;
+    }
+
+    function showResult() {
+      var rec = recommendClass(answers);
+      var card = findClassCard(rec.classType);
+      var priceEl = card ? card.querySelector(".class-card__price") : null;
+
+      document.getElementById("quiz-result-name").textContent = rec.classType;
+      document.getElementById("quiz-result-price").textContent = priceEl ? priceEl.textContent : "";
+      document.getElementById("quiz-result-reason").textContent = rec.reason;
+
+      var message =
+        "Hi Christian, I completed the Find My Class quiz on your site and it recommended " +
+        rec.classType + " for me. I'd like to know more.";
+
+      document.getElementById("quiz-result-text").href = smsHref("9105878450") + "?body=" + encodeURIComponent(message);
+      document.getElementById("quiz-result-email").href =
+        "mailto:Christian@onyxdefenseacademy.com?subject=" + encodeURIComponent("Find My Class result: " + rec.classType) +
+        "&body=" + encodeURIComponent(message);
+
+      questionView.hidden = true;
+      resultView.hidden = false;
+    }
+
+    if (restartBtn) {
+      restartBtn.addEventListener("click", function () {
+        current = 0;
+        answers = {};
+        resultView.hidden = true;
+        questionView.hidden = false;
+        renderQuestion();
+      });
+    }
+
+    renderQuestion();
+  })();
+
+  /* ---- Group Cost Calculator ----
+     Reads window.calculatorData and window.rangeFeePerPerson from
+     calculator-data.js. Same invisible-content approach as the quiz above:
+     #calc-result, #calc-min-note, and the two live-fire question blocks
+     never carry the "reveal" class, so there's nothing for the fade-in
+     system to miss when this script shows/hides them later. */
+  (function initCalculator() {
+    var classSelect = document.getElementById("calc-class");
+    var countField = document.getElementById("calc-count-field");
+    var countInput = document.getElementById("calc-count");
+    var hoursField = document.getElementById("calc-hours-field");
+    var hoursSelect = document.getElementById("calc-hours");
+    var minNote = document.getElementById("calc-min-note");
+    var step1 = document.getElementById("calc-livefire-step1");
+    var step2 = document.getElementById("calc-livefire-step2");
+    var resultEl = document.getElementById("calc-result");
+    var totalEl = document.getElementById("calc-total");
+    var breakdownEl = document.getElementById("calc-breakdown");
+    var textBtn = document.getElementById("calc-text");
+    var emailBtn = document.getElementById("calc-email");
+
+    if (!classSelect || typeof calculatorData === "undefined") return;
+
+    // Populate the class dropdown, ordered to match the class cards on the
+    // page when possible, falling back to calculatorData's own key order.
+    var orderedNames = [];
+    document.querySelectorAll(".class-card h3").forEach(function (h3) {
+      var name = h3.textContent.trim();
+      if (calculatorData[name]) orderedNames.push(name);
+    });
+    if (orderedNames.length === 0) orderedNames = Object.keys(calculatorData);
+    orderedNames.forEach(function (name) {
+      var opt = document.createElement("option");
+      opt.value = name;
+      opt.textContent = name;
+      classSelect.appendChild(opt);
+    });
+
+    // Populate the hours dropdown in 30-minute steps.
+    for (var h = 1; h <= 8; h += 0.5) {
+      var hOpt = document.createElement("option");
+      hOpt.value = String(h);
+      hOpt.textContent = h + (h === 1 ? " hour" : " hours");
+      hoursSelect.appendChild(hOpt);
+    }
+
+    var rangeStep1Answer = null; // "yes" / "no" / null (liveFire "optional" only)
+    var rangeLocationAnswer = null; // "own" / "ours" / null
+
+    function currentClassData() { return calculatorData[classSelect.value] || null; }
+
+    function resetAnswersForNewClass() {
+      rangeStep1Answer = null;
+      rangeLocationAnswer = null;
+      var data = currentClassData();
+      if (data) {
+        if (data.pricingType === "perPerson") countInput.value = data.minPeople || 1;
+        else if (data.pricingType === "hourly") hoursSelect.value = "1";
+      }
+    }
+
+    function setSelectedButton(container, answer) {
+      container.querySelectorAll(".quiz-option").forEach(function (btn) {
+        btn.classList.toggle("is-selected", btn.getAttribute("data-answer") === answer);
+      });
+    }
+
+    function pluralPeople(n) { return n === 1 ? "1 person" : n + " people"; }
+    function pluralHours(n) { return n === 1 ? "1 hour" : n + " hours"; }
+
+    function computeHourlyClassCost(data, hours) {
+      var extraHalfHours = Math.round((hours - 1) / 0.5);
+      var cost = data.firstHourPrice + extraHalfHours * data.additionalHalfHourPrice;
+      var desc = "1 hr";
+      if (extraHalfHours > 0) {
+        desc += " + " + extraHalfHours + " additional 30-min" + (extraHalfHours > 1 ? " increments" : "");
+      }
+      return { cost: cost, desc: desc };
+    }
+
+    function render() {
+      var name = classSelect.value;
+      var data = currentClassData();
+
+      countField.hidden = true;
+      hoursField.hidden = true;
+      minNote.hidden = true;
+      step1.hidden = true;
+      step2.hidden = true;
+      resultEl.hidden = true;
+
+      if (!data) return;
+
+      var isHourly = data.pricingType === "hourly";
+      if (isHourly) {
+        hoursField.hidden = false;
+      } else {
+        countField.hidden = false;
+        countInput.min = data.minPeople || 1;
+      }
+
+      var count = parseInt(countInput.value, 10) || 0;
+      if (!isHourly && data.minPeople && count < data.minPeople) {
+        minNote.hidden = false;
+        minNote.textContent = "This class requires a minimum of " + data.minPeople + " students.";
+        return;
+      }
+
+      var rangeApplies = false;
+
+      if (data.liveFire === "fixed") {
+        step2.hidden = false;
+        setSelectedButton(step2, rangeLocationAnswer);
+        rangeApplies = rangeLocationAnswer === "ours";
+      } else if (data.liveFire === "optional") {
+        step1.hidden = false;
+        setSelectedButton(step1, rangeStep1Answer);
+        if (rangeStep1Answer === "yes") {
+          step2.hidden = false;
+          setSelectedButton(step2, rangeLocationAnswer);
+          rangeApplies = rangeLocationAnswer === "ours";
+        }
+      }
+      // liveFire "none" -> both stay hidden, rangeApplies stays false.
+
+      var classCost, breakdownParts, hoursVal, fee = 0;
+      if (isHourly) {
+        hoursVal = parseFloat(hoursSelect.value) || 1;
+        var h2 = computeHourlyClassCost(data, hoursVal);
+        classCost = h2.cost;
+        breakdownParts = ["Class: $" + classCost + " (" + h2.desc + ")"];
+        if (rangeApplies) {
+          fee = data.rangeFlatFee;
+          breakdownParts.push("Range fee: $" + fee);
+        }
+      } else {
+        classCost = count * data.price;
+        breakdownParts = ["Class: $" + classCost + " (" + count + " \u00d7 $" + data.price + ")"];
+        if (rangeApplies) {
+          var perPersonFee = rangeFeePerPerson[data.feeType];
+          fee = perPersonFee * count;
+          breakdownParts.push("Range fee: $" + fee + " (" + count + " \u00d7 $" + perPersonFee + ")");
+        }
+      }
+      var total = classCost + fee;
+
+      totalEl.textContent = "$" + total;
+      breakdownEl.textContent = breakdownParts.join(" + ") + " = $" + total + " total";
+      resultEl.hidden = false;
+
+      var message;
+      if (isHourly) {
+        message = "Hi Christian, I'm interested in " + name + " for " + pluralHours(hoursVal) +
+          " (approx. $" + total + " total" + (rangeApplies ? ", including a $" + fee + " range fee" : "") +
+          "). Can we talk about scheduling?";
+      } else {
+        message = "Hi Christian, I'm interested in " + name + " for " + pluralPeople(count) +
+          " (approx. $" + total + " total" + (rangeApplies ? ", including a $" + rangeFeePerPerson[data.feeType] + "-per-person range fee" : "") +
+          "). Can we talk about scheduling?";
+      }
+
+      textBtn.href = smsHref("9105878450") + "?body=" + encodeURIComponent(message);
+      emailBtn.href = "mailto:Christian@onyxdefenseacademy.com?subject=" + encodeURIComponent("Group cost estimate: " + name) +
+        "&body=" + encodeURIComponent(message);
+    }
+
+    classSelect.addEventListener("change", function () {
+      resetAnswersForNewClass();
+      render();
+    });
+    countInput.addEventListener("input", render);
+    hoursSelect.addEventListener("change", render);
+
+    step1.addEventListener("click", function (e) {
+      var btn = e.target.closest(".quiz-option");
+      if (!btn) return;
+      rangeStep1Answer = btn.getAttribute("data-answer");
+      if (rangeStep1Answer === "no") rangeLocationAnswer = null;
+      render();
+    });
+    step2.addEventListener("click", function (e) {
+      var btn = e.target.closest(".quiz-option");
+      if (!btn) return;
+      rangeLocationAnswer = btn.getAttribute("data-answer");
+      render();
+    });
+
+    render();
+  })();
+
   /* ---- SMS link compatibility ----
      Android reads the prefilled message with "?body=", but iOS needs
      "&body=" instead. This rewrites every sms: link on the page for iOS

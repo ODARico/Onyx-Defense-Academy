@@ -1263,3 +1263,182 @@ button { font: inherit; }
 @media (prefers-reduced-motion: reduce) {
   .recip-state { transition: none; }
 }
+
+/* ==========================================================================
+   FIND MY CLASS QUIZ
+   ========================================================================== */
+.quiz-card {
+  background: var(--onyx-raised);
+  border-top: 3px solid var(--red);
+  padding: 2.25rem 2rem;
+  max-width: 640px;
+  margin: 3rem auto 0;
+}
+
+.quiz-progress { margin-bottom: 1.75rem; }
+.quiz-progress__bar {
+  height: 4px;
+  background: rgba(224,80,90,0.18);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.quiz-progress__fill {
+  height: 100%;
+  width: 25%;
+  background: var(--red);
+  transition: width 0.25s ease;
+}
+.quiz-progress__label {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+}
+
+.quiz-prompt {
+  font-size: 1.4rem;
+  margin-bottom: 1.25rem;
+}
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.quiz-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--onyx);
+  color: var(--bone);
+  border: 1px solid var(--hairline-steel);
+  border-radius: var(--radius-sm);
+  padding: 0.9em 1.2em;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+.quiz-option:hover { border-color: var(--red-bright); background: var(--onyx-deep); }
+.quiz-option.is-selected { border-color: var(--red-bright); background: var(--onyx-deep); }
+.quiz-back { margin-top: 1.5rem; }
+
+.quiz-result__name {
+  font-size: 1.8rem;
+  margin: 0.4rem 0 0.3rem;
+}
+.quiz-result__price {
+  font-family: var(--font-mono);
+  color: var(--red-bright);
+  font-size: 1rem;
+  margin-bottom: 0.9rem;
+}
+.quiz-result__reason {
+  color: var(--bone-dim);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.quiz-result__cta {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.quiz-restart {
+  font-size: 0.75rem;
+  padding: 0.7em 1.2em;
+  opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .quiz-card { padding: 1.75rem 1.25rem; }
+  .quiz-result__cta { flex-direction: column; }
+  .quiz-result__cta .btn { width: 100%; justify-content: center; }
+}
+
+/* ==========================================================================
+   GROUP COST CALCULATOR
+   ========================================================================== */
+.calc-card {
+  background: var(--onyx-raised);
+  border-top: 3px solid var(--red);
+  padding: 2.25rem 2rem;
+  max-width: 640px;
+  margin: 3rem auto 0;
+}
+
+.calc-field { display: flex; flex-direction: column; margin-bottom: 1.25rem; }
+.calc-field label {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  margin-bottom: 0.45rem;
+}
+.calc-field input,
+.calc-field select {
+  width: 100%;
+  padding: 0.75rem 0.85rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--bone);
+  background: var(--onyx-deep);
+  border: 1px solid var(--hairline-steel);
+  border-radius: var(--radius-sm);
+}
+.calc-field input:focus,
+.calc-field select:focus { outline: none; border-color: var(--red-bright); }
+
+.calc-note {
+  font-size: 0.92rem;
+  color: var(--bone-dim);
+  background: var(--onyx-deep);
+  border-left: 3px solid var(--steel-deep);
+  padding: 0.9rem 1.1rem;
+  margin-bottom: 1.25rem;
+}
+
+.calc-question { margin-bottom: 1.25rem; }
+.calc-question__prompt { font-size: 1rem; margin-bottom: 0.75rem; }
+.calc-question__options { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.calc-result {
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid rgba(224,80,90,0.22);
+}
+.calc-total-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--bone-dim);
+  margin-bottom: 0.6rem;
+}
+.calc-total-row strong {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--bone);
+  text-transform: none;
+  letter-spacing: 0;
+}
+.calc-breakdown {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--bone-dim);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.calc-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+@media (max-width: 640px) {
+  .calc-card { padding: 1.75rem 1.25rem; }
+  .calc-cta { flex-direction: column; }
+  .calc-cta .btn { width: 100%; justify-content: center; }
+}
