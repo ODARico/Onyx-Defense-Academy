@@ -152,13 +152,21 @@
           <select id="calc-hours"></select>
         </div>
 
+        <div id="calc-mode" class="calc-question" hidden>
+          <p class="calc-question__prompt">Is this a public class or a private booking for just your group?</p>
+          <div class="calc-question__options">
+            <button type="button" class="quiz-option" data-answer="public">Public Class</button>
+            <button type="button" class="quiz-option" data-answer="private">Private For My Group</button>
+          </div>
+        </div>
+
         <div id="calc-min-note" class="calc-note" hidden></div>
 
         <div id="calc-livefire-step1" class="calc-question" hidden>
-          <p class="calc-question__prompt">Will this session include time at a range, or is it classroom/skills work only?</p>
+          <p class="calc-question__prompt" id="calc-livefire-prompt">Will this session include time at a range, or is it classroom/skills work only?</p>
           <div class="calc-question__options">
             <button type="button" class="quiz-option" data-answer="no">Classroom Only</button>
-            <button type="button" class="quiz-option" data-answer="yes">Yes, There Will Be Range Time</button>
+            <button type="button" class="quiz-option" data-answer="yes">Yes, Include Live Fire</button>
           </div>
         </div>
 
@@ -202,7 +210,7 @@
         <div class="class-card reveal">
           <div class="class-card__price"><strong>$50</strong>per person</div>
           <h3>Basic Handgun</h3>
-          <p>Built for first-time shooters and anyone who wants a refresher. Safe handling, fundamentals, and range time in a relaxed, no-pressure setting.</p>
+          <p>Built for first-time shooters and anyone who wants a refresher. Safe handling, storage, and how different handguns work &mdash; hands-on with a firearm we provide. Classroom-only; private groups can add live fire.</p>
           <div class="class-card__meta">1 Day &middot; 4 Hours</div>
           <div class="class-card__cta-row">
             <a class="btn btn--outline class-card__cta" href="sms:+19105878450?body=Hi%20Christian%2C%20I%27m%20interested%20in%20the%20Basic%20Handgun%20class%20%28%2450%29.%20Can%20you%20tell%20me%20about%20upcoming%20dates%3F">Text</a>

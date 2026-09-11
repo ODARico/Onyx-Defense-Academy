@@ -675,17 +675,19 @@
   /* ---- Group Cost Calculator ----
      Reads window.calculatorData and window.rangeFeePerPerson from
      calculator-data.js. Same invisible-content approach as the quiz above:
-     #calc-result, #calc-min-note, and the two live-fire question blocks
-     never carry the "reveal" class, so there's nothing for the fade-in
-     system to miss when this script shows/hides them later. */
+     nothing this script shows or hides carries the "reveal" class, so the
+     scroll fade-in system has nothing to miss. */
   (function initCalculator() {
     var classSelect = document.getElementById("calc-class");
     var countField = document.getElementById("calc-count-field");
+    var countLabel = document.getElementById("calc-count-label");
     var countInput = document.getElementById("calc-count");
     var hoursField = document.getElementById("calc-hours-field");
     var hoursSelect = document.getElementById("calc-hours");
+    var modeEl = document.getElementById("calc-mode");
     var minNote = document.getElementById("calc-min-note");
     var step1 = document.getElementById("calc-livefire-step1");
+    var step1Prompt = document.getElementById("calc-livefire-prompt");
     var step2 = document.getElementById("calc-livefire-step2");
     var resultEl = document.getElementById("calc-result");
     var totalEl = document.getElementById("calc-total");
@@ -695,8 +697,7 @@
 
     if (!classSelect || typeof calculatorData === "undefined") return;
 
-    // Populate the class dropdown, ordered to match the class cards on the
-    // page when possible, falling back to calculatorData's own key order.
+    // Build the class dropdown in the same order the class cards appear.
     var orderedNames = [];
     document.querySelectorAll(".class-card h3").forEach(function (h3) {
       var name = h3.textContent.trim();
@@ -710,7 +711,6 @@
       classSelect.appendChild(opt);
     });
 
-    // Populate the hours dropdown in 30-minute steps.
     for (var h = 1; h <= 8; h += 0.5) {
       var hOpt = document.createElement("option");
       hOpt.value = String(h);
@@ -718,133 +718,173 @@
       hoursSelect.appendChild(hOpt);
     }
 
-    var rangeStep1Answer = null; // "yes" / "no" / null (liveFire "optional" only)
-    var rangeLocationAnswer = null; // "own" / "ours" / null
+    var modeAnswer = "public";      // "public" | "private" (classes with privateOption)
+    var rangeStep1Answer = null;    // "yes" | "no"         (liveFire "optional")
+    var rangeLocationAnswer = null; // "own" | "ours"
 
-    function currentClassData() { return calculatorData[classSelect.value] || null; }
+    function baseData() { return calculatorData[classSelect.value] || null; }
 
-    function resetAnswersForNewClass() {
-      rangeStep1Answer = null;
-      rangeLocationAnswer = null;
-      var data = currentClassData();
-      if (data) {
-        if (data.pricingType === "perPerson") countInput.value = data.minPeople || 1;
-        else if (data.pricingType === "hourly") hoursSelect.value = "1";
-      }
+    // Merge in the private-booking overrides when "Private" is selected.
+    function effectiveData() {
+      var data = baseData();
+      if (!data) return null;
+      if (!data.privateOption || modeAnswer !== "private") return data;
+      var merged = {};
+      Object.keys(data).forEach(function (k) { if (k !== "privateOption") merged[k] = data[k]; });
+      Object.keys(data.privateOption).forEach(function (k) { merged[k] = data.privateOption[k]; });
+      return merged;
     }
 
-    function setSelectedButton(container, answer) {
+    function money(n) {
+      return "$" + (Math.round(n * 100) % 100 === 0 ? String(Math.round(n)) : n.toFixed(2));
+    }
+    function setSelected(container, answer) {
       container.querySelectorAll(".quiz-option").forEach(function (btn) {
         btn.classList.toggle("is-selected", btn.getAttribute("data-answer") === answer);
       });
     }
+    function peopleWord(n) { return n === 1 ? "1 person" : n + " people"; }
+    function hoursWord(n) { return n === 1 ? "1 hour" : n + " hours"; }
 
-    function pluralPeople(n) { return n === 1 ? "1 person" : n + " people"; }
-    function pluralHours(n) { return n === 1 ? "1 hour" : n + " hours"; }
-
-    function computeHourlyClassCost(data, hours) {
-      var extraHalfHours = Math.round((hours - 1) / 0.5);
-      var cost = data.firstHourPrice + extraHalfHours * data.additionalHalfHourPrice;
-      var desc = "1 hr";
-      if (extraHalfHours > 0) {
-        desc += " + " + extraHalfHours + " additional 30-min" + (extraHalfHours > 1 ? " increments" : "");
+    function resetForNewClass() {
+      modeAnswer = "public";
+      rangeStep1Answer = null;
+      rangeLocationAnswer = null;
+      var data = baseData();
+      if (data) {
+        countInput.value = data.minPeople || 1;
+        if (data.pricingType === "hourly") hoursSelect.value = "1";
       }
-      return { cost: cost, desc: desc };
     }
 
     function render() {
       var name = classSelect.value;
-      var data = currentClassData();
+      var base = baseData();
 
       countField.hidden = true;
       hoursField.hidden = true;
+      modeEl.hidden = true;
       minNote.hidden = true;
       step1.hidden = true;
       step2.hidden = true;
       resultEl.hidden = true;
 
-      if (!data) return;
+      if (!base) return;
 
+      var data = effectiveData();
       var isHourly = data.pricingType === "hourly";
-      if (isHourly) {
-        hoursField.hidden = false;
-      } else {
-        countField.hidden = false;
-        countInput.min = data.minPeople || 1;
+
+      // Headcount applies to every class -- One-on-One can be taught to more
+      // than one person (a couple, for example), just at a reduced rate for
+      // each additional student.
+      countField.hidden = false;
+      countInput.min = base.minPeople || 1;
+      countLabel.textContent = isHourly ? "Number Of Students" : "Number Of People";
+      if (isHourly) hoursField.hidden = false;
+
+      if (base.privateOption) {
+        modeEl.hidden = false;
+        setSelected(modeEl, modeAnswer);
       }
 
       var count = parseInt(countInput.value, 10) || 0;
-      if (!isHourly && data.minPeople && count < data.minPeople) {
+      if (base.minPeople && count < base.minPeople) {
         minNote.hidden = false;
-        minNote.textContent = "This class requires a minimum of " + data.minPeople + " students.";
+        minNote.textContent = "This class requires a minimum of " + base.minPeople + " students.";
         return;
       }
 
-      var rangeApplies = false;
-
+      var liveFireOn = false;
       if (data.liveFire === "fixed") {
         step2.hidden = false;
-        setSelectedButton(step2, rangeLocationAnswer);
-        rangeApplies = rangeLocationAnswer === "ours";
+        setSelected(step2, rangeLocationAnswer);
+        liveFireOn = true;
       } else if (data.liveFire === "optional") {
         step1.hidden = false;
-        setSelectedButton(step1, rangeStep1Answer);
+        step1Prompt.textContent = isHourly
+          ? "Will this session include time at a range, or is it classroom/skills work only?"
+          : "Would you like to add live fire to this private class?";
+        setSelected(step1, rangeStep1Answer);
         if (rangeStep1Answer === "yes") {
+          liveFireOn = true;
           step2.hidden = false;
-          setSelectedButton(step2, rangeLocationAnswer);
-          rangeApplies = rangeLocationAnswer === "ours";
+          setSelected(step2, rangeLocationAnswer);
         }
       }
-      // liveFire "none" -> both stay hidden, rangeApplies stays false.
+      var usingOurRange = liveFireOn && rangeLocationAnswer === "ours";
 
-      var classCost, breakdownParts, hoursVal, fee = 0;
+      var parts = [];
+      var classCost, hoursVal;
+
       if (isHourly) {
         hoursVal = parseFloat(hoursSelect.value) || 1;
-        var h2 = computeHourlyClassCost(data, hoursVal);
-        classCost = h2.cost;
-        breakdownParts = ["Class: $" + classCost + " (" + h2.desc + ")"];
-        if (rangeApplies) {
-          fee = data.rangeFlatFee;
-          breakdownParts.push("Range fee: $" + fee);
-        }
+        var extraHalfHours = Math.round((hoursVal - 1) / 0.5);
+        var perStudent = data.firstHourPrice + extraHalfHours * data.additionalHalfHourPrice;
+        var rate = data.additionalPersonRate;
+        classCost = perStudent * (1 + (count - 1) * rate);
+        var timeDesc = "1 hr" + (extraHalfHours > 0
+          ? " + " + extraHalfHours + " additional 30-min" + (extraHalfHours > 1 ? " increments" : "")
+          : "");
+        parts.push("Instruction: " + money(classCost) + " (" + timeDesc +
+          (count > 1 ? ", " + count + " students \u2014 each additional at half rate" : "") + ")");
       } else {
         classCost = count * data.price;
-        breakdownParts = ["Class: $" + classCost + " (" + count + " \u00d7 $" + data.price + ")"];
-        if (rangeApplies) {
-          var perPersonFee = rangeFeePerPerson[data.feeType];
-          fee = perPersonFee * count;
-          breakdownParts.push("Range fee: $" + fee + " (" + count + " \u00d7 $" + perPersonFee + ")");
-        }
+        parts.push("Class: " + money(classCost) + " (" + count + " \u00d7 " + money(data.price) + ")");
       }
-      var total = classCost + fee;
 
-      totalEl.textContent = "$" + total;
-      breakdownEl.textContent = breakdownParts.join(" + ") + " = $" + total + " total";
+      // A private class adding live fire pays one flat extra hour of
+      // instructor time -- charged per class, not per student.
+      var instructionFee = 0;
+      if (liveFireOn && data.instructionFee) {
+        instructionFee = data.instructionFee;
+        parts.push("Live-fire session: " + money(instructionFee) + " (flat, one extra hour of instruction)");
+      }
+
+      var rangeFee = 0;
+      if (usingOurRange) {
+        var perPerson = rangeFeePerPerson[data.feeType];
+        rangeFee = perPerson * count;
+        parts.push("Range fee: " + money(rangeFee) + " (" + count + " \u00d7 " + money(perPerson) + ")");
+      }
+
+      var total = classCost + instructionFee + rangeFee;
+      totalEl.textContent = money(total);
+      breakdownEl.textContent = parts.join(" + ") + " = " + money(total) + " total";
       resultEl.hidden = false;
 
-      var message;
-      if (isHourly) {
-        message = "Hi Christian, I'm interested in " + name + " for " + pluralHours(hoursVal) +
-          " (approx. $" + total + " total" + (rangeApplies ? ", including a $" + fee + " range fee" : "") +
-          "). Can we talk about scheduling?";
-      } else {
-        message = "Hi Christian, I'm interested in " + name + " for " + pluralPeople(count) +
-          " (approx. $" + total + " total" + (rangeApplies ? ", including a $" + rangeFeePerPerson[data.feeType] + "-per-person range fee" : "") +
-          "). Can we talk about scheduling?";
+      var privateLabel = base.privateOption && modeAnswer === "private" ? "a private " : "";
+      var who = isHourly
+        ? hoursWord(hoursVal) + " with " + peopleWord(count)
+        : peopleWord(count);
+      var feeNote = "";
+      if (usingOurRange) {
+        feeNote = ", including a " + money(rangeFeePerPerson[data.feeType]) + "-per-person range fee";
+        if (instructionFee) feeNote += " and the " + money(instructionFee) + " live-fire session";
+      } else if (instructionFee) {
+        feeNote = ", including the " + money(instructionFee) + " live-fire session";
       }
+      var message = "Hi Christian, I'm interested in " + privateLabel + name + " for " + who +
+        " (approx. " + money(total) + " total" + feeNote + "). Can we talk about scheduling?";
 
       textBtn.href = smsHref("9105878450") + "?body=" + encodeURIComponent(message);
-      emailBtn.href = "mailto:Christian@onyxdefenseacademy.com?subject=" + encodeURIComponent("Group cost estimate: " + name) +
-        "&body=" + encodeURIComponent(message);
+      emailBtn.href = "mailto:Christian@onyxdefenseacademy.com?subject=" +
+        encodeURIComponent("Group cost estimate: " + name) + "&body=" + encodeURIComponent(message);
     }
 
-    classSelect.addEventListener("change", function () {
-      resetAnswersForNewClass();
-      render();
-    });
+    classSelect.addEventListener("change", function () { resetForNewClass(); render(); });
     countInput.addEventListener("input", render);
     hoursSelect.addEventListener("change", render);
 
+    modeEl.addEventListener("click", function (e) {
+      var btn = e.target.closest(".quiz-option");
+      if (!btn) return;
+      modeAnswer = btn.getAttribute("data-answer");
+      // Switching back to a public class drops any live-fire answers, since
+      // public sessions don't offer it.
+      rangeStep1Answer = null;
+      rangeLocationAnswer = null;
+      render();
+    });
     step1.addEventListener("click", function (e) {
       var btn = e.target.closest(".quiz-option");
       if (!btn) return;
