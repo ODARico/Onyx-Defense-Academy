@@ -42,6 +42,14 @@
 
 /* --- Reset --- */
 *, *::before, *::after { box-sizing: border-box; }
+
+/* The browser's built-in rule for the HTML "hidden" attribute is
+   [hidden] { display: none }, but ANY author rule that sets display (e.g.
+   .some-class { display: flex }) silently beats it, because author styles
+   outrank the browser's default styles in the cascade. The result is an
+   element the JavaScript believes is hidden but that's actually still on
+   screen. This rule makes "hidden" always win, site-wide. */
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 body {
   margin: 0;
@@ -1338,6 +1346,15 @@ button { font: inherit; }
 .quiz-result__reason {
   color: var(--bone-dim);
   line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.quiz-result__also {
+  font-size: 0.92rem;
+  color: var(--bone-dim);
+  line-height: 1.6;
+  background: var(--onyx-deep);
+  border-left: 3px solid var(--steel-deep);
+  padding: 0.85rem 1.05rem;
   margin-bottom: 1.5rem;
 }
 .quiz-result__cta {

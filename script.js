@@ -636,6 +636,16 @@
       document.getElementById("quiz-result-price").textContent = priceEl ? priceEl.textContent : "";
       document.getElementById("quiz-result-reason").textContent = rec.reason;
 
+      var alsoEl = document.getElementById("quiz-result-also");
+      if (alsoEl) {
+        if (rec.alsoConsider) {
+          alsoEl.textContent = "Also worth a look \u2014 " + rec.alsoConsider.classType + ". " + rec.alsoConsider.note;
+          alsoEl.hidden = false;
+        } else {
+          alsoEl.hidden = true;
+        }
+      }
+
       var message =
         "Hi Christian, I completed the Find My Class quiz on your site and it recommended " +
         rec.classType + " for me. I'd like to know more.";

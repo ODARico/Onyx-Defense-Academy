@@ -50,7 +50,8 @@ const quizQuestions = [
     id: "permit",
     prompt: "Do you need this for a NC concealed carry permit?",
     options: [
-      { label: "Yes", value: "yes" },
+      { label: "Yes — I need to get one", value: "need" },
+      { label: "I already have one", value: "have" },
       { label: "No", value: "no" },
       { label: "Not sure", value: "not-sure" }
     ]
@@ -77,17 +78,103 @@ const quizQuestions = [
   }
 ];
 
-/**
- * answers looks like: { experience: "never", permit: "yes", group: "solo", specific: "basics" }
- * Returns { classType, reason } -- classType must exactly match a class name
- * used elsewhere on the site (see the note above).
- */
+/* ----------------------------------------------------------------------------
+   WHICH CLASS GETS RECOMMENDED
+   ----------------------------------------------------------------------------
+   answers looks like:
+     { experience: "never", permit: "need", group: "solo", specific: "basics" }
+
+   Returns { classType, reason, alsoConsider } where alsoConsider is optional.
+   Every classType returned MUST exactly match a class name used in
+   classes.html / schedule-data.js / reviews-data.js / calculator-data.js.
+
+   ORDER MATTERS. The rules below are checked top to bottom, first match wins,
+   and they're deliberately ordered by how binding the requirement is:
+
+   1. A class for a kid comes first -- a minor can't hold a NC permit, so the
+      other answers can't override it.
+
+   2. NEEDING A PERMIT comes next, and it OUTRANKS the "anything specific?"
+      answer on purpose. Only the full NC Concealed Carry Course meets the
+      NCDOJ requirement -- the Legal Refresher, Cleaning Basics and Real
+      Estate Agent Safety classes do not. Someone who says they need a permit
+      and then picks "legal refresher" would otherwise be steered into a class
+      that can't get them the permit they came for. When this rule overrides
+      what they picked, alsoConsider keeps their original interest visible
+      instead of silently dropping it.
+
+   3. Only then do the specialty picks apply -- which is now safe, because
+      anyone still reaching this point either already holds a permit or
+      doesn't need one.
+
+   4. Finally, the general fallback based on group size and experience.
+   -------------------------------------------------------------------------- */
 function recommendClass(answers) {
-  // Q4 is checked first -- a specific stated need overrides everything else.
+  var experiencePhrase = {
+    never: "you've never shot before",
+    some: "you've shot a little before",
+    "a-lot": "you're already comfortable with a handgun"
+  }[answers.experience] || "you're getting started";
+
+  var needsPermit = answers.permit === "need" || answers.permit === "not-sure";
+
+  // 1. A class for a kid -- a minor can't hold a NC permit, so nothing overrides this.
+  if (answers.specific === "kid") {
+    var kidResult = {
+      classType: "ODA Children's Firearms & Safety Fundamentals",
+      reason: "This course is written specifically for kids, and parents and guardians are welcome to take part."
+    };
+    if (needsPermit) {
+      kidResult.alsoConsider = {
+        classType: "NC Concealed Carry Course",
+        note: "You also mentioned needing a permit for yourself \u2014 that's the class for it."
+      };
+    }
+    return kidResult;
+  }
+
+  // 2. Needing a permit outranks the "anything specific?" answer. See note above.
+  if (needsPermit) {
+    var permitReason;
+    if (answers.specific === "legal") {
+      permitReason = "The Legal Refresher is a law update for people who already hold a permit \u2014 it won't meet the requirement on its own. Since you still need to get your permit, the full course is the one that does.";
+    } else if (answers.permit === "not-sure") {
+      permitReason = "Since " + experiencePhrase + " and aren't sure whether you need a permit, this course covers everything either way. If it turns out you don't need one, mention it and we'll point you somewhere better suited.";
+    } else {
+      permitReason = "Since " + experiencePhrase + " and need to get your permit, start here \u2014 this is the course that meets the requirement.";
+    }
+
+    var permitResult;
+    if (answers.group === "group") {
+      permitResult = {
+        classType: "Private Concealed Carry Course",
+        reason: permitReason + " With a group of 3 or more, it can be taught privately for just your group."
+      };
+    } else {
+      permitResult = { classType: "NC Concealed Carry Course", reason: permitReason };
+    }
+
+    // Keep their original interest visible rather than silently dropping it.
+    if (answers.specific === "cleaning") {
+      permitResult.alsoConsider = {
+        classType: "Handgun Cleaning Basics",
+        note: "You mentioned cleaning and maintenance \u2014 this one can be added separately."
+      };
+    } else if (answers.specific === "real-estate") {
+      permitResult.alsoConsider = {
+        classType: "Real Estate Agent Safety",
+        note: "You mentioned agent safety \u2014 this one can be added separately."
+      };
+    }
+    return permitResult;
+  }
+
+  // 3. Specialty picks -- safe now, since anyone here already holds a permit
+  //    or doesn't need one.
   if (answers.specific === "legal") {
     return {
       classType: "NC Concealed Carry Legal Refresher",
-      reason: "You just want to stay current on the law, so a classroom-only refresher is the fastest fit."
+      reason: "Since you already hold your permit and just want to stay current on the law, a classroom-only refresher is the fastest fit."
     };
   }
   if (answers.specific === "cleaning") {
@@ -102,33 +189,8 @@ function recommendClass(answers) {
       reason: "This class is built specifically for agents who show properties alone."
     };
   }
-  if (answers.specific === "kid") {
-    return {
-      classType: "ODA Children's Firearms & Safety Fundamentals",
-      reason: "This course is written specifically for kids, with parents welcome to take part."
-    };
-  }
 
-  // Otherwise ("Just the basics"), fall back to experience / permit / group size.
-  const needsPermit = answers.permit === "yes" || answers.permit === "not-sure";
-  const experiencePhrase = {
-    never: "you've never shot before",
-    some: "you've shot a little before",
-    "a-lot": "you're already comfortable with a handgun"
-  }[answers.experience] || "you're getting started";
-
-  if (needsPermit && answers.group === "group") {
-    return {
-      classType: "Private Concealed Carry Course",
-      reason: "Since " + experiencePhrase + " and you're training as a group of 3 or more toward a permit, a private class for your group makes sense."
-    };
-  }
-  if (needsPermit) {
-    return {
-      classType: "NC Concealed Carry Course",
-      reason: "Since " + experiencePhrase + " and need a permit, start here."
-    };
-  }
+  // 4. General fallback.
   if (answers.group === "solo") {
     return {
       classType: "Handgun One-on-One",
